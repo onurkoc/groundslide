@@ -1,0 +1,465 @@
+{
+  "meta": {
+    "name": "N1 slice stresses of Slide2 (Spencer, PL1 in B3)",
+    "description": "Spencer slice table of the surface PL1 in B3 from the governing Slide2 run (SPEC_ETAPPE4 8, 10.2.1). u = 0 in all slices, so sigmaN = sigmaNEff. `same`: the slice has the same boundaries in GroundSlide (27 of 50). Units kPa, x and b in m, input frame.",
+    "source": "Slide2 9.02, Query -> Slice Data -> Copy All, Examples/Slide2/N1/N1_PL1_spencer_slices.csv, Onur; table in docs/SLIDE2_GEGENRECHNUNG_ETAPPE4.md section 7",
+    "date": "2026-11-18",
+    "method": "spencer",
+    "tolerance": 0.0001,
+    "F": 1.41943,
+    "thetaDeg": 20.4691,
+    "model": "tests/benchmarks/N1_polyline_B3.json, surface PL1"
+  },
+  "slices": [
+    {
+      "nr": 1,
+      "xLeft": 45,
+      "b": 1,
+      "tauMob": 9.73651,
+      "tauF": 13.8203,
+      "sigmaN": 8.19264,
+      "same": true
+    },
+    {
+      "nr": 2,
+      "xLeft": 46,
+      "b": 1,
+      "tauMob": 11.5194,
+      "tauF": 16.3509,
+      "sigmaN": 13.6197,
+      "same": true
+    },
+    {
+      "nr": 3,
+      "xLeft": 47,
+      "b": 1,
+      "tauMob": 13.3022,
+      "tauF": 18.8816,
+      "sigmaN": 19.0466,
+      "same": true
+    },
+    {
+      "nr": 4,
+      "xLeft": 48,
+      "b": 1,
+      "tauMob": 15.0851,
+      "tauF": 21.4122,
+      "sigmaN": 24.4736,
+      "same": true
+    },
+    {
+      "nr": 5,
+      "xLeft": 49,
+      "b": 1,
+      "tauMob": 16.868,
+      "tauF": 23.9429,
+      "sigmaN": 29.9007,
+      "same": true
+    },
+    {
+      "nr": 6,
+      "xLeft": 50,
+      "b": 1,
+      "tauMob": 21.6223,
+      "tauF": 30.6913,
+      "sigmaN": 44.3726,
+      "same": true
+    },
+    {
+      "nr": 7,
+      "xLeft": 51,
+      "b": 1,
+      "tauMob": 29.348,
+      "tauF": 41.6574,
+      "sigmaN": 67.8896,
+      "same": true
+    },
+    {
+      "nr": 8,
+      "xLeft": 52,
+      "b": 1,
+      "tauMob": 37.0738,
+      "tauF": 52.6236,
+      "sigmaN": 91.4066,
+      "same": true
+    },
+    {
+      "nr": 9,
+      "xLeft": 53,
+      "b": 1,
+      "tauMob": 44.7995,
+      "tauF": 63.5897,
+      "sigmaN": 114.923,
+      "same": true
+    },
+    {
+      "nr": 10,
+      "xLeft": 54,
+      "b": 1,
+      "tauMob": 52.5252,
+      "tauF": 74.5559,
+      "sigmaN": 138.44,
+      "same": true
+    },
+    {
+      "nr": 11,
+      "xLeft": 55,
+      "b": 1.07143,
+      "tauMob": 41.5175,
+      "tauF": 58.9312,
+      "sigmaN": 104.933,
+      "same": false
+    },
+    {
+      "nr": 12,
+      "xLeft": 56.0714,
+      "b": 1.07143,
+      "tauMob": 44.1627,
+      "tauF": 62.6859,
+      "sigmaN": 112.985,
+      "same": false
+    },
+    {
+      "nr": 13,
+      "xLeft": 57.1429,
+      "b": 1.07143,
+      "tauMob": 46.759,
+      "tauF": 66.3711,
+      "sigmaN": 120.888,
+      "same": false
+    },
+    {
+      "nr": 14,
+      "xLeft": 58.2143,
+      "b": 1.07143,
+      "tauMob": 49.1959,
+      "tauF": 69.8302,
+      "sigmaN": 128.306,
+      "same": false
+    },
+    {
+      "nr": 15,
+      "xLeft": 59.2857,
+      "b": 1.07143,
+      "tauMob": 51.6207,
+      "tauF": 73.272,
+      "sigmaN": 135.688,
+      "same": false
+    },
+    {
+      "nr": 16,
+      "xLeft": 60.3571,
+      "b": 1.07143,
+      "tauMob": 54.0455,
+      "tauF": 76.7138,
+      "sigmaN": 143.068,
+      "same": false
+    },
+    {
+      "nr": 17,
+      "xLeft": 61.4286,
+      "b": 1.07143,
+      "tauMob": 56.4703,
+      "tauF": 80.1556,
+      "sigmaN": 150.45,
+      "same": false
+    },
+    {
+      "nr": 18,
+      "xLeft": 62.5,
+      "b": 1.07143,
+      "tauMob": 58.895,
+      "tauF": 83.5974,
+      "sigmaN": 157.83,
+      "same": false
+    },
+    {
+      "nr": 19,
+      "xLeft": 63.5714,
+      "b": 1.07143,
+      "tauMob": 61.3198,
+      "tauF": 87.0392,
+      "sigmaN": 165.211,
+      "same": false
+    },
+    {
+      "nr": 20,
+      "xLeft": 64.6429,
+      "b": 1.07143,
+      "tauMob": 63.7446,
+      "tauF": 90.481,
+      "sigmaN": 172.592,
+      "same": false
+    },
+    {
+      "nr": 21,
+      "xLeft": 65.7143,
+      "b": 1.07143,
+      "tauMob": 66.1694,
+      "tauF": 93.9228,
+      "sigmaN": 179.973,
+      "same": false
+    },
+    {
+      "nr": 22,
+      "xLeft": 66.7857,
+      "b": 1.07143,
+      "tauMob": 68.5942,
+      "tauF": 97.3646,
+      "sigmaN": 187.354,
+      "same": false
+    },
+    {
+      "nr": 23,
+      "xLeft": 67.8571,
+      "b": 1.07143,
+      "tauMob": 71.0189,
+      "tauF": 100.806,
+      "sigmaN": 194.735,
+      "same": false
+    },
+    {
+      "nr": 24,
+      "xLeft": 68.9286,
+      "b": 1.07143,
+      "tauMob": 73.4436,
+      "tauF": 104.248,
+      "sigmaN": 202.116,
+      "same": false
+    },
+    {
+      "nr": 25,
+      "xLeft": 70,
+      "b": 1.125,
+      "tauMob": 64.3491,
+      "tauF": 91.3391,
+      "sigmaN": 174.432,
+      "same": true
+    },
+    {
+      "nr": 26,
+      "xLeft": 71.125,
+      "b": 1.125,
+      "tauMob": 64.9397,
+      "tauF": 92.1773,
+      "sigmaN": 176.23,
+      "same": true
+    },
+    {
+      "nr": 27,
+      "xLeft": 72.25,
+      "b": 1.125,
+      "tauMob": 65.5302,
+      "tauF": 93.0155,
+      "sigmaN": 178.027,
+      "same": true
+    },
+    {
+      "nr": 28,
+      "xLeft": 73.375,
+      "b": 1.125,
+      "tauMob": 66.1208,
+      "tauF": 93.8538,
+      "sigmaN": 179.825,
+      "same": true
+    },
+    {
+      "nr": 29,
+      "xLeft": 74.5,
+      "b": 1.125,
+      "tauMob": 66.7113,
+      "tauF": 94.692,
+      "sigmaN": 181.623,
+      "same": true
+    },
+    {
+      "nr": 30,
+      "xLeft": 75.625,
+      "b": 1.04167,
+      "tauMob": 77.6333,
+      "tauF": 110.195,
+      "sigmaN": 182.203,
+      "same": false
+    },
+    {
+      "nr": 31,
+      "xLeft": 76.6667,
+      "b": 1.04167,
+      "tauMob": 78.4822,
+      "tauF": 111.4,
+      "sigmaN": 184.29,
+      "same": false
+    },
+    {
+      "nr": 32,
+      "xLeft": 77.7083,
+      "b": 1.04167,
+      "tauMob": 79.3311,
+      "tauF": 112.605,
+      "sigmaN": 186.378,
+      "same": false
+    },
+    {
+      "nr": 33,
+      "xLeft": 78.75,
+      "b": 1.04167,
+      "tauMob": 80.1808,
+      "tauF": 113.811,
+      "sigmaN": 188.466,
+      "same": false
+    },
+    {
+      "nr": 34,
+      "xLeft": 79.7917,
+      "b": 1.04167,
+      "tauMob": 79.6707,
+      "tauF": 113.087,
+      "sigmaN": 187.213,
+      "same": false
+    },
+    {
+      "nr": 35,
+      "xLeft": 80.8333,
+      "b": 1.04167,
+      "tauMob": 76.3595,
+      "tauF": 108.387,
+      "sigmaN": 179.072,
+      "same": false
+    },
+    {
+      "nr": 36,
+      "xLeft": 81.875,
+      "b": 1.04167,
+      "tauMob": 72.9635,
+      "tauF": 103.567,
+      "sigmaN": 170.722,
+      "same": false
+    },
+    {
+      "nr": 37,
+      "xLeft": 82.9167,
+      "b": 1.04167,
+      "tauMob": 69.5673,
+      "tauF": 98.7459,
+      "sigmaN": 162.373,
+      "same": false
+    },
+    {
+      "nr": 38,
+      "xLeft": 83.9583,
+      "b": 1.04167,
+      "tauMob": 66.1711,
+      "tauF": 93.9252,
+      "sigmaN": 154.023,
+      "same": false
+    },
+    {
+      "nr": 39,
+      "xLeft": 85,
+      "b": 1.04167,
+      "tauMob": 53.4143,
+      "tauF": 75.8179,
+      "sigmaN": 122.66,
+      "same": true
+    },
+    {
+      "nr": 40,
+      "xLeft": 86.0417,
+      "b": 1.04167,
+      "tauMob": 49.0398,
+      "tauF": 69.6086,
+      "sigmaN": 111.905,
+      "same": true
+    },
+    {
+      "nr": 41,
+      "xLeft": 87.0833,
+      "b": 1.04167,
+      "tauMob": 44.6653,
+      "tauF": 63.3992,
+      "sigmaN": 101.15,
+      "same": true
+    },
+    {
+      "nr": 42,
+      "xLeft": 88.125,
+      "b": 1.04167,
+      "tauMob": 40.2908,
+      "tauF": 57.1899,
+      "sigmaN": 90.3954,
+      "same": true
+    },
+    {
+      "nr": 43,
+      "xLeft": 89.1667,
+      "b": 1.04167,
+      "tauMob": 35.9162,
+      "tauF": 50.9805,
+      "sigmaN": 79.6404,
+      "same": true
+    },
+    {
+      "nr": 44,
+      "xLeft": 90.2083,
+      "b": 1.04167,
+      "tauMob": 31.5417,
+      "tauF": 44.7712,
+      "sigmaN": 68.8857,
+      "same": true
+    },
+    {
+      "nr": 45,
+      "xLeft": 91.25,
+      "b": 1.04167,
+      "tauMob": 27.1672,
+      "tauF": 38.5619,
+      "sigmaN": 58.1308,
+      "same": true
+    },
+    {
+      "nr": 46,
+      "xLeft": 92.2917,
+      "b": 1.04167,
+      "tauMob": 22.7926,
+      "tauF": 32.3525,
+      "sigmaN": 47.376,
+      "same": true
+    },
+    {
+      "nr": 47,
+      "xLeft": 93.3333,
+      "b": 1.04167,
+      "tauMob": 18.4181,
+      "tauF": 26.1432,
+      "sigmaN": 36.621,
+      "same": true
+    },
+    {
+      "nr": 48,
+      "xLeft": 94.375,
+      "b": 1.04167,
+      "tauMob": 14.0435,
+      "tauF": 19.9338,
+      "sigmaN": 25.8661,
+      "same": true
+    },
+    {
+      "nr": 49,
+      "xLeft": 95.4167,
+      "b": 1.04167,
+      "tauMob": 9.66902,
+      "tauF": 13.7245,
+      "sigmaN": 15.1113,
+      "same": true
+    },
+    {
+      "nr": 50,
+      "xLeft": 96.4583,
+      "b": 1.04167,
+      "tauMob": 5.2956,
+      "tauF": 7.51673,
+      "sigmaN": 4.3591,
+      "same": true
+    }
+  ]
+}

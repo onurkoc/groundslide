@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "name": "S5 one prestressed anchor, circle cuts the bond body",
+    "description": "Geometry and soil as B1 (Slide2 Quick Start Tutorial). Grouted tieback, active, bond length 8 m (free length 2 m), bond strength 5 kN/m. Slide2 run S5_1, 2026-11-17. Elements per SPEC_ETAPPE3 7.2.1.",
+    "units": "SI",
+    "source": "Slide2 9.02, Auto Refine Search, Onur",
+    "date": "2026-11-16"
+  },
+  "ground": [
+    [
+      0,
+      30
+    ],
+    [
+      50,
+      30
+    ],
+    [
+      80,
+      50
+    ],
+    [
+      130,
+      50
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "Soil 1",
+      "gamma": 19,
+      "gammaSat": 20,
+      "model": "drained",
+      "c": 5,
+      "phi": 30
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "spencer"
+    ],
+    "direction": "left",
+    "slices": 50,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1,
+    "G": 1,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": {
+    "grid": {
+      "xMin": 20,
+      "xMax": 80,
+      "zMin": 40,
+      "zMax": 120,
+      "nx": 31,
+      "nz": 41
+    },
+    "radii": 40
+  },
+  "surfaces": [
+    {
+      "id": "SL2",
+      "xc": 42.458,
+      "zc": 77.523,
+      "R": 48.115
+    }
+  ],
+  "supports": [
+    {
+      "id": "A1",
+      "type": "anchor",
+      "x": 65.5028196489086,
+      "z": 40.3352130992724,
+      "angle": 35.72668105434866,
+      "freeLength": 2,
+      "bondLength": 8.000000000000014,
+      "spacing": 1,
+      "P0": 40,
+      "Rk": 40
+    }
+  ],
+  "expected": {
+    "source": "Slide2 9.02, Auto Refine Search, Onur",
+    "slide2Version": "9.02",
+    "date": "2026-11-16",
+    "search": {
+      "spencer": 1.1616
+    },
+    "surfaces": {
+      "SL2": {
+        "spencer": 1.1616
+      }
+    }
+  }
+}

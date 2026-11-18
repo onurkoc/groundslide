@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "name": "H1 hand calculation dry",
+    "description": "Rocscience Slide Hand Calculation #1, Simple Homogeneous Dry Slope",
+    "units": "SI"
+  },
+  "ground": [
+    [
+      0,
+      10
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      25,
+      17.5
+    ],
+    [
+      35,
+      17.5
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "Soil",
+      "gamma": 20,
+      "gammaSat": 20,
+      "model": "drained",
+      "c": 20,
+      "phi": 20
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "bishop",
+      "janbu"
+    ],
+    "direction": "left",
+    "slices": 7,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1.0,
+    "G": 1.0,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": null,
+  "surfaces": [
+    {
+      "id": "C1",
+      "xc": 13.689,
+      "zc": 25.558,
+      "R": 15.989
+    }
+  ],
+  "expected": {
+    "source": "Rocscience, Slide Hand Calculation #1: Slide FOS Bishop = 2.113",
+    "slide2Version": "Slide (Version der Handrechnung, 7 Lamellen, Toleranz 0.005)",
+    "date": null,
+    "search": null,
+    "surfaces": {
+      "C1": {
+        "bishop": 2.113,
+        "janbu": null,
+        "janbuCorrected": null
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "name": "V14 Arai & Tagyo 1",
+    "description": "Slide-Verifikation #14",
+    "units": "SI"
+  },
+  "ground": [
+    [
+      0,
+      15
+    ],
+    [
+      18,
+      15
+    ],
+    [
+      48,
+      35
+    ],
+    [
+      66,
+      35
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "",
+      "gamma": 18.82,
+      "gammaSat": 18.82,
+      "model": "drained",
+      "c": 41.65,
+      "phi": 15
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "bishop"
+    ],
+    "direction": "left",
+    "slices": 50,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1.0,
+    "G": 1.0,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": {
+    "grid": {
+      "xMin": 10,
+      "xMax": 40,
+      "zMin": 35,
+      "zMax": 65,
+      "nx": 21,
+      "nz": 21
+    },
+    "radii": 40
+  },
+  "surfaces": [],
+  "expected": {
+    "source": "Rocscience, Slide Slope Stability Verification Manual (Slide 7.0), Problem #14; Suchwert",
+    "slide2Version": "Slide 7.0",
+    "date": "2023-07-28",
+    "search": {
+      "bishop": 1.409,
+      "janbu": null,
+      "janbuCorrected": null,
+      "spencer": null
+    },
+    "surfaces": {}
+  }
+}

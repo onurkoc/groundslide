@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "name": "N1 B3 with the fixed polyline PL1",
+    "description": "Geometry and soil as B3 (two layers). Single surface: the polyline PL1 (45;30) (55;28) (70;32) (85;40) (97.5;50), entry and exit on the ground. SPEC_ETAPPE4 10.2.1. Bishop gives I_NONCIRCULAR for a polyline and has no target.",
+    "units": "SI",
+    "source": "Slide2 9.02, fixed polyline PL1 (Add Surface), tolerance 0.0001, 100 iterations, Onur",
+    "date": "2026-11-17"
+  },
+  "ground": [
+    [
+      0,
+      30
+    ],
+    [
+      50,
+      30
+    ],
+    [
+      80,
+      50
+    ],
+    [
+      130,
+      50
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    },
+    {
+      "material": "M2",
+      "top": [
+        [
+          0,
+          30
+        ],
+        [
+          50,
+          30
+        ],
+        [
+          57.5,
+          35
+        ],
+        [
+          130,
+          35
+        ]
+      ]
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "Soil 1",
+      "gamma": 19,
+      "gammaSat": 20,
+      "model": "drained",
+      "c": 5,
+      "phi": 30
+    },
+    "M2": {
+      "name": "Soil 2",
+      "gamma": 20,
+      "gammaSat": 21,
+      "model": "drained",
+      "c": 10,
+      "phi": 25
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "janbu",
+      "spencer"
+    ],
+    "direction": "left",
+    "slices": 50,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1,
+    "G": 1,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": null,
+  "surfaces": [
+    {
+      "id": "PL1",
+      "type": "polyline",
+      "points": [
+        [
+          45,
+          30
+        ],
+        [
+          55,
+          28
+        ],
+        [
+          70,
+          32
+        ],
+        [
+          85,
+          40
+        ],
+        [
+          97.5,
+          50
+        ]
+      ]
+    }
+  ],
+  "expected": {
+    "source": "Slide2 9.02, fixed polyline PL1, tolerance 0.0001, 100 iterations, Onur",
+    "slide2Version": "9.02",
+    "date": "2026-11-17",
+    "surfaces": {
+      "PL1": {
+        "spencer": 1.41943,
+        "janbu": 1.35509,
+        "janbuCorrected": 1.42502
+      }
+    }
+  }
+}

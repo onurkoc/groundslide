@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>GroundSlide</title>
+  <script>
+    // Apply a stored light/dark choice before the first paint (same key as app/lib/theme.js).
+    try {
+      var t = localStorage.getItem('groundslide.theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) { /* storage not available: follow the system */ }
+  </script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 17 L9 17 L15 8 L22 8"></path>
+        <path d="M5 21 A 11 11 0 0 0 19 12" stroke-dasharray="2 3"></path>
+      </svg>
+      <span>GroundSlide · LEM 2D</span>
+    </div>
+
+    <div class="model-name">
+      <span class="visually-hidden" data-i18n="ui.model.label"></span>
+      <span id="model-name"></span>
+      <span id="dirty-mark" hidden data-i18n-title="ui.model.dirty" aria-hidden="true">●</span>
+      <span id="dirty-text" class="visually-hidden" hidden data-i18n="ui.model.dirty"></span>
+    </div>
+
+    <div class="toolbar" role="group" data-i18n-aria-label="ui.file.group">
+      <button type="button" class="btn" id="btn-new" data-icon="file"><span data-i18n="ui.file.new"></span></button>
+      <button type="button" class="btn" id="btn-open" data-icon="folder"><span data-i18n="ui.file.open"></span></button>
+      <button type="button" class="btn" id="btn-save" data-icon="save"><span data-i18n="ui.file.save"></span></button>
+    </div>
+
+    <div class="toolbar">
+      <button type="button" class="btn btn-primary" id="btn-run" disabled aria-describedby="run-hint" data-i18n-title="ui.run.title" data-icon="play"><span data-i18n="ui.run"></span></button>
+      <span class="hint" id="run-hint" data-i18n="ui.run.invalid"></span>
+    </div>
+
+    <div class="header-spacer"></div>
+
+    <div class="segmented" role="group" data-i18n-aria-label="ui.lang.label" id="lang-switch">
+      <button type="button" data-lang="de" lang="de" aria-pressed="false">DE</button>
+      <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+    </div>
+
+    <div class="segmented" role="group" data-i18n-aria-label="ui.theme.label" id="theme-switch">
+      <button type="button" data-theme-choice="light" aria-pressed="false" data-i18n="ui.theme.light"></button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false" data-i18n="ui.theme.dark"></button>
+      <button type="button" data-theme-choice="system" aria-pressed="false" data-i18n="ui.theme.system"></button>
+    </div>
+
+    <a class="licence-link" id="licence-link" href="https://github.com/onurkoc/groundslide/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="ui.licence.link" data-i18n-title="ui.licence.title"></a>
+  </header>
+
+  <main class="layout" id="layout">
+    <aside class="inputs" id="inputs" data-i18n-aria-label="ui.inputs">
+      <h2 class="visually-hidden" data-i18n="ui.inputs"></h2>
+      <!-- input areas of SPEC_ETAPPE2 5.1; the bodies are built by app/ui/inputs.js -->
+      <details class="panel" data-section="project">
+        <summary><span class="summary-title" data-i18n="ui.section.project"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="ground">
+        <summary><span class="summary-title" data-i18n="ui.section.ground"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="bottom">
+        <summary><span class="summary-title" data-i18n="ui.section.bottom"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="materials">
+        <summary><span class="summary-title" data-i18n="ui.section.materials"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="layers">
+        <summary><span class="summary-title" data-i18n="ui.section.layers"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="water">
+        <summary><span class="summary-title" data-i18n="ui.section.water"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="loads">
+        <summary><span class="summary-title" data-i18n="ui.section.loads"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="supports">
+        <summary><span class="summary-title" data-i18n="ui.section.supports"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="tensionCrack">
+        <summary><span class="summary-title" data-i18n="ui.section.tensionCrack"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="seismic">
+        <summary><span class="summary-title" data-i18n="ui.section.seismic"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="analysis">
+        <summary><span class="summary-title" data-i18n="ui.section.analysis"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="partialFactors" hidden>
+        <summary><span class="summary-title" data-i18n="ui.section.partialFactors"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="search">
+        <summary><span class="summary-title" data-i18n="ui.section.search"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+      <details class="panel" data-section="surfaces">
+        <summary><span class="summary-title" data-i18n="ui.section.surfaces"></span><span class="summary-info"></span><span class="summary-errors" hidden></span></summary>
+        <div class="panel-body"></div>
+      </details>
+    </aside>
+
+    <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" tabindex="0"
+         data-i18n-aria-label="ui.resize" data-i18n-title="ui.resize"></div>
+
+    <section class="output" data-i18n-aria-label="ui.output">
+      <div class="output-head">
+        <div class="tabs main-tabs" role="tablist" id="main-tabs" data-i18n-aria-label="ui.main.tabs">
+          <button type="button" role="tab" class="tab" id="tab-sketch" data-tab="sketch" aria-controls="panel-sketch" aria-selected="true"><span data-i18n="ui.sketch"></span></button>
+          <button type="button" role="tab" class="tab" id="tab-result" data-tab="result" aria-controls="panel-result" aria-selected="false" tabindex="-1"><span data-i18n="ui.result"></span><span class="tab-mark" id="result-mark" hidden aria-hidden="true">●</span><span class="visually-hidden" id="result-mark-text" hidden data-i18n="ui.tab.resultReady"></span><span class="tab-badge" id="result-badge" hidden></span></button>
+        </div>
+        <div id="run-progress" class="run-progress" role="status" hidden>
+          <progress class="progress" id="run-bar" max="1"></progress>
+          <p class="hint" id="run-progress-text"></p>
+        </div>
+        <p class="hint run-time" id="run-time" hidden></p>
+        <div class="export-actions">
+          <div class="menu-wrap">
+            <button type="button" class="btn btn-small" id="btn-graphic" aria-haspopup="menu" aria-expanded="false" aria-controls="graphic-menu" data-icon="download" data-i18n-title="ui.export.graphicTitle"><span data-i18n="ui.export.graphic"></span></button>
+            <ul class="menu" id="graphic-menu" role="menu" data-i18n-aria-label="ui.export.graphic" hidden>
+              <li role="none"><button type="button" class="menu-item" role="menuitem" id="menu-png" data-format="png" data-i18n="ui.export.png"></button></li>
+              <li role="none"><button type="button" class="menu-item" role="menuitem" id="menu-svg" data-format="svg" data-i18n="ui.export.svg"></button></li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-small" id="btn-doc" disabled data-icon="file" data-i18n-title="ui.export.docTitle"><span data-i18n="ui.export.doc"></span></button>
+        </div>
+      </div>
+      <div class="main-panels" id="main-panels">
+        <div role="tabpanel" class="main-panel area area-sketch" id="panel-sketch" data-panel="sketch" aria-labelledby="tab-sketch">
+          <div id="sketch"></div>
+        </div>
+        <div role="tabpanel" class="main-panel area area-result" id="panel-result" data-panel="result" aria-labelledby="tab-result" hidden>
+          <div class="result-head">
+            <div class="tabs" role="tablist" id="result-tabs" data-i18n-aria-label="ui.tabs.label">
+              <button type="button" role="tab" class="tab" id="tab-overview" data-tab="overview" aria-controls="panel-overview" aria-selected="true"><span data-i18n="ui.tab.overview"></span></button>
+              <button type="button" role="tab" class="tab" id="tab-slices" data-tab="slices" aria-controls="panel-slices" aria-selected="false" tabindex="-1"><span data-i18n="ui.tab.slices"></span></button>
+              <button type="button" role="tab" class="tab" id="tab-supports" data-tab="supports" aria-controls="panel-supports" aria-selected="false" tabindex="-1" hidden><span data-i18n="ui.tab.supports"></span></button>
+              <button type="button" role="tab" class="tab" id="tab-messages" data-tab="messages" aria-controls="panel-messages" aria-selected="false" tabindex="-1"><span data-i18n="ui.tab.messages"></span><span class="tab-badge" id="messages-badge" hidden></span></button>
+            </div>
+          </div>
+          <div id="result-panels" class="result-panels">
+            <div role="tabpanel" class="tab-panel" id="panel-overview" data-panel="overview" aria-labelledby="tab-overview"></div>
+            <div role="tabpanel" class="tab-panel" id="panel-slices" data-panel="slices" aria-labelledby="tab-slices" hidden></div>
+            <div role="tabpanel" class="tab-panel" id="panel-supports" data-panel="supports" aria-labelledby="tab-supports" hidden></div>
+            <div role="tabpanel" class="tab-panel" id="panel-messages" data-panel="messages" aria-labelledby="tab-messages" hidden>
+              <ul class="messages-list" id="messages" aria-live="polite"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- result document (SPEC_ETAPPE2 8.5): filled when printing, shown only in the print view -->
+  <div id="print-doc" aria-hidden="true"></div>
+
+  <input type="file" id="file-input" accept=".json,application/json" hidden>
+</body>
+</html>

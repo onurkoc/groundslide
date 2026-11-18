@@ -1,0 +1,1070 @@
+/* GroundSlide – own design rules (SPEC_ETAPPE2 chapter 1.3).
+   No framework, no web fonts, no image files. Every colour, spacing, radius,
+   shadow and font size is a variable in :root below; nothing else in this file
+   contains a fixed colour value.
+   Light and dark: "color-scheme: light dark" follows the system
+   (prefers-color-scheme); the switch in the header sets data-theme on <html>. */
+
+:root {
+  color-scheme: light dark;
+
+  /* --- colours: surfaces and text --- */
+  --color-bg: light-dark(#f3f4f7, #14161b);
+  --color-surface: light-dark(#ffffff, #1c1f26);
+  --color-surface-2: light-dark(#e9ecf1, #262a33);
+  --color-border: light-dark(#cdd2db, #3a414d);
+  --color-border-strong: light-dark(#8b95a5, #66707f);
+  --color-text: light-dark(#1a1d24, #e8ebf0);
+  --color-text-muted: light-dark(#4d5767, #a7b0be);
+  --color-text-disabled: light-dark(#7c8695, #7b8493);
+
+  /* --- colours: one accent for main actions and selection --- */
+  --color-accent: light-dark(#1d5ed8, #7aa7ff);
+  --color-accent-text: light-dark(#ffffff, #0a1020);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+  --color-accent-hover: color-mix(in srgb, var(--color-accent) 88%, var(--color-text));
+  --color-focus: var(--color-accent);
+
+  /* --- colours: status (red only for errors, yellow for warnings, green for fulfilled) --- */
+  --color-error: light-dark(#b42318, #ff9a92);
+  --color-error-bg: light-dark(#fdecea, #3d1e1f);
+  --color-danger: light-dark(#b42318, #ff9a92);
+  --color-danger-text: light-dark(#ffffff, #2a0706);
+  --color-warn: light-dark(#7a4f00, #f2c561);
+  --color-warn-bg: light-dark(#fff3d1, #3b2f12);
+  --color-ok: light-dark(#17692f, #6fd69a);
+  --color-ok-bg: light-dark(#e4f5e9, #163223);
+  --color-info: light-dark(#1d4fb0, #8db3ff);
+  --color-info-bg: light-dark(#e8effc, #1c2b4a);
+
+  /* --- colours: sketch (used from the next step on) --- */
+  --sketch-bg: light-dark(#fbfbfd, #171a20);
+  --sketch-ground: light-dark(#2b3140, #d6dbe5);
+  --sketch-water: light-dark(#1f78c8, #62b0f5);
+  --sketch-load: light-dark(#a3411a, #f0a27a);
+  --sketch-circle: light-dark(#c2185b, #ff7fb1);
+  --sketch-gridline: light-dark(rgb(60 70 90 / 0.16), rgb(200 210 230 / 0.16));
+  --sketch-axis: light-dark(#4d5767, #a7b0be);
+  --sketch-grid: light-dark(#7b8496, #8a94a6);
+  /* supports (SPEC_ETAPPE3 9): nails, anchors, piles and the point where a support cuts the circle; shotcrete band */
+  --sketch-support: light-dark(#6d3fc0, #b9a0ff);
+  --sketch-shotcrete: light-dark(#7a6a52, #c8b99c);
+  --mat-1: light-dark(#e6d7a3, #6e6131);
+  --mat-2: light-dark(#b9d5ea, #36596f);
+  --mat-3: light-dark(#bfe0c1, #3a6340);
+  --mat-4: light-dark(#f2c8a0, #7a5030);
+  --mat-5: light-dark(#d3c4e6, #55467a);
+  --mat-6: light-dark(#d2d6dd, #50565f);
+  --mat-7: light-dark(#f0bfd0, #7a3f55);
+  --mat-8: light-dark(#d4e4ac, #55703a);
+  /* Contour scale (SPEC_ETAPPE2 8.2, version 1.7): seven classes F < 1.0 ... F >= 2.0, red (small F) over yellow to blue
+     (large F), no green, the same in light and dark; grey for "no valid surface". Exception to 1.3 "red only for errors". */
+  --contour-1: #d73027;
+  --contour-2: #fc8d59;
+  --contour-3: #fee090;
+  --contour-4: #ffffbf;
+  --contour-5: #e0f3f8;
+  --contour-6: #91bfdb;
+  --contour-7: #4575b4;
+  --contour-none: light-dark(#b8bec9, #4a515d);
+  /* Lines of the governing circles per method (Okabe-Ito colours, plus a dash pattern per method) */
+  --method-bishop: light-dark(#0072b2, #56b4e9);
+  --method-janbu: light-dark(#b34700, #e69f00);
+  --method-janbuCorrected: light-dark(#a8326f, #e48bbd);
+  --method-spencer: light-dark(#00795a, #2fd0a0);
+  /* handles of the sketch (SPEC_ETAPPE2 6.1): visible on every ground in light and dark */
+  --handle-fill: light-dark(#ffffff, #14161b);
+  --handle-stroke: light-dark(#1d5ed8, #7aa7ff);
+  --export-ground: #ffffff; /* ground of the exported graphic: always white, also in the dark scheme */
+  --sketch-body: light-dark(rgb(29 94 216 / 0.14), rgb(122 167 255 / 0.18));
+
+  /* --- shadows --- */
+  --shadow-color: light-dark(rgb(20 30 50 / 0.14), rgb(0 0 0 / 0.5));
+  --shadow-1: 0 1px 2px var(--shadow-color);
+  --shadow-2: 0 4px 14px var(--shadow-color);
+
+  /* --- spacing, radii, sizes --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --control-height: 32px;
+  --row-height: 28px;
+  --header-height: 52px;
+  --splitter-width: 8px;
+  --input-width: 420px;
+  --input-width-min: 280px;
+
+  /* --- type --- */
+  --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+  --font-size-s: 0.8125rem;
+  --font-size-m: 0.875rem;
+  --font-size-l: 1rem;
+  --font-size-xl: 1.125rem;
+  --line-height: 1.45;
+}
+
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+/* ---------- base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { height: 100%; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh; /* the page fills the window and does not scroll as a whole (from 900 px width, see below) */
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: var(--font-size-m) / var(--line-height) var(--font-family);
+}
+
+h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.25; }
+h2 { font-size: var(--font-size-l); }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+table, input, .num { font-variant-numeric: tabular-nums; }
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hint { color: var(--color-text-muted); font-size: var(--font-size-s); }
+
+/* ---------- buttons: primary, normal, danger, disabled ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn:hover { background: var(--color-surface-2); }
+.btn:active { background: var(--color-border); }
+
+.btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-text);
+}
+.btn-primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+.btn-primary:active { background: var(--color-accent-hover); }
+
+.btn-danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: var(--color-danger-text);
+}
+.btn-danger:hover { background: color-mix(in srgb, var(--color-danger) 88%, var(--color-text)); }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* switch buttons in a row (language, light/dark/system) */
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+.segmented button {
+  min-height: calc(var(--control-height) - 2px);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-right: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.segmented button:last-child { border-right: 0; }
+.segmented button:hover { background: var(--color-surface-2); }
+.segmented button[aria-pressed="true"] {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+.segmented button:focus-visible { outline-offset: -2px; }
+
+/* ---------- input field with unit and error state ---------- */
+
+.field { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--space-1); min-width: 0; }
+.field > label { font-size: var(--font-size-s); color: var(--color-text-muted); }
+.field-control {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+}
+.field-control:hover { border-color: var(--color-text-muted); }
+.field-control:has(input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.field-control input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: right;
+}
+.field-control input:focus-visible { outline: 0; }
+.field-unit {
+  padding-right: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-s);
+  white-space: nowrap;
+}
+.field.is-invalid .field-control { border-color: var(--color-error); }
+.field-error { color: var(--color-error); font-size: var(--font-size-s); }
+
+/* ---------- compact table with fixed header row ---------- */
+
+.table-wrap {
+  max-height: 22rem;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+}
+table.compact { width: 100%; border-collapse: separate; border-spacing: 0; }
+table.compact th,
+table.compact td {
+  height: var(--row-height);
+  padding: 0 var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+table.compact thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-s);
+  font-weight: 600;
+}
+table.compact td.num,
+table.compact th.num { text-align: right; }
+table.compact tbody tr:hover { background: var(--color-accent-soft); }
+table.compact tbody tr:last-child td { border-bottom: 0; }
+
+/* ---------- collapsible area (<details>) ---------- */
+
+details.panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+}
+details.panel > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--radius-m);
+}
+details.panel > summary::-webkit-details-marker { display: none; }
+details.panel > summary::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--color-text-muted);
+  border-bottom: 2px solid var(--color-text-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.12s;
+}
+details.panel[open] > summary::before { transform: rotate(45deg); }
+details.panel > summary:hover { background: var(--color-surface-2); }
+details.panel > summary:focus-visible { outline-offset: -2px; }
+details.panel[open] > summary { border-bottom: 1px solid var(--color-border); border-radius: var(--radius-m) var(--radius-m) 0 0; }
+.panel-body { display: grid; gap: var(--space-3); padding: var(--space-3); }
+
+/* ---------- tabs ---------- */
+
+.tabs { display: flex; gap: var(--space-1); border-bottom: 1px solid var(--color-border); }
+.tab {
+  min-height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+.tab:hover { color: var(--color-text); }
+.tab[aria-selected="true"] {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+.tab:focus-visible { outline-offset: -2px; }
+
+/* ---------- notice rows: info, warning, error, fulfilled ---------- */
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid currentColor;
+  border-radius: var(--radius-s);
+}
+.notice-info { background: var(--color-info-bg); color: var(--color-info); }
+.notice-warn { background: var(--color-warn-bg); color: var(--color-warn); }
+.notice-error { background: var(--color-error-bg); color: var(--color-error); }
+.notice-ok { background: var(--color-ok-bg); color: var(--color-ok); }
+.notice .notice-text { color: var(--color-text); }
+.notice .code {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-s);
+  font-weight: 600;
+}
+.notice .where { flex-basis: 100%; color: var(--color-text-muted); font-size: var(--font-size-s); }
+
+/* ---------- progress bar ---------- */
+
+.progress {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border: 0;
+  border-radius: var(--radius-s);
+  background: var(--color-surface-2);
+  overflow: hidden;
+}
+.progress::-webkit-progress-bar { background: var(--color-surface-2); }
+.progress::-webkit-progress-value { background: var(--color-accent); }
+.progress::-moz-progress-bar { background: var(--color-accent); }
+.progress:indeterminate {
+  background: linear-gradient(90deg, var(--color-surface-2) 0 35%, var(--color-accent) 35% 65%, var(--color-surface-2) 65% 100%);
+  background-size: 200% 100%;
+  animation: progress-slide 1.2s linear infinite;
+}
+.progress:indeterminate::-webkit-progress-bar,
+.progress:indeterminate::-moz-progress-bar { background: transparent; }
+@keyframes progress-slide { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .progress:indeterminate { animation: none; } }
+.run-progress { display: grid; gap: var(--space-1); }
+.run-progress[hidden] { display: none; }
+.inputs.is-locked { opacity: 0.6; }
+
+/* ---------- symbols, small buttons ---------- */
+
+.icon { display: inline-flex; width: 16px; height: 16px; flex: none; }
+.icon svg { width: 100%; height: 100%; }
+.btn-small { min-height: 28px; padding: 0 var(--space-2); font-size: var(--font-size-s); }
+.btn-icon { min-height: 24px; width: 24px; padding: 0; border-color: transparent; background: transparent; }
+.btn-icon:hover { border-color: var(--color-border-strong); }
+.btn-icon-danger:hover { color: var(--color-danger); }
+
+/* ---------- area summary: title, short info, error count ---------- */
+
+details.panel > summary .summary-title { flex: 1; min-width: 0; }
+.summary-info { color: var(--color-text-muted); font-size: var(--font-size-s); font-weight: 400; white-space: nowrap; }
+.summary-errors {
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--font-size-s);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.summary-errors[hidden] { display: none; }
+
+/* ---------- fields: text, select, check, groups ---------- */
+
+.field-control select {
+  flex: 1;
+  min-width: 0;
+  min-height: calc(var(--control-height) - 2px);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+}
+.field-control select:focus-visible,
+.field-control textarea:focus-visible { outline: 0; }
+.field-control:has(select:focus-visible),
+.field-control:has(textarea:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+.field-control-text input,
+.field-control-text textarea { text-align: left; }
+.field-control textarea {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  resize: vertical;
+}
+.field-error[hidden] { display: none; }
+.field input[readonly] { color: var(--color-text-muted); }
+
+.check { display: flex; align-items: center; gap: var(--space-2); min-height: 28px; cursor: pointer; }
+.check input { accent-color: var(--color-accent); width: 16px; height: 16px; margin: 0; }
+
+fieldset { margin: 0; padding: var(--space-2) var(--space-3) var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-m); min-width: 0; }
+fieldset legend { padding: 0 var(--space-1); color: var(--color-text-muted); font-size: var(--font-size-s); }
+.grid-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-3); }
+.grid-fields > .field-error { grid-column: 1 / -1; }
+.check-group { display: grid; gap: 0; }
+fieldset.is-invalid { border-color: var(--color-error); }
+
+/* ---------- tables in the input ---------- */
+
+.table-block { display: grid; gap: var(--space-2); }
+.table-actions { display: flex; gap: var(--space-2); }
+table.compact th.idx,
+table.compact td.idx { width: 2.5ch; color: var(--color-text-muted); padding-right: var(--space-1); }
+table.compact th.actions,
+table.compact td.actions { width: 1%; text-align: right; }
+table.compact td.actions { display: table-cell; white-space: nowrap; }
+table.compact td input,
+table.compact td select {
+  width: 100%;
+  min-width: 6ch;
+  height: 24px;
+  padding: 0 var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+}
+table.compact td:not(.num) input { min-width: 9ch; }
+table.compact td.num input { text-align: right; }
+table.compact td input:hover,
+table.compact td select:hover { border-color: var(--color-border-strong); }
+table.compact td input:focus-visible,
+table.compact td select:focus-visible { outline-offset: 0; background: var(--color-surface); }
+table.compact td input[aria-invalid="true"],
+table.compact td select[aria-invalid="true"] { border-color: var(--color-error); background: var(--color-error-bg); }
+table.compact tr.is-invalid td:first-child { box-shadow: inset 3px 0 0 var(--color-error); }
+.table-block.is-invalid .table-wrap { border-color: var(--color-error); }
+
+/* ---------- area Supports (SPEC_ETAPPE3 8): a table per type; partial-factor columns only in mode sia ---------- */
+
+.supports-root { display: grid; gap: var(--space-4); }
+.support-type { display: grid; gap: var(--space-2); }
+.support-type h3 { margin: 0; font-size: var(--font-size-m); font-weight: 600; }
+.supports-root:not(.show-factors) .col-factor { display: none; }
+table.compact td.col-choice select { min-width: 11ch; }
+.support-other { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.support-other li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.support-other li.is-invalid { color: var(--color-error); }
+
+.layers { display: grid; gap: var(--space-3); }
+.layer { display: grid; gap: var(--space-2); padding: var(--space-2) var(--space-3) var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-m); background: var(--color-bg); }
+.layer.is-invalid { border-color: var(--color-error); }
+.layer-head { display: flex; align-items: center; gap: var(--space-2); }
+.layer-head .layer-material { flex: 1; min-width: 0; border: 1px solid var(--color-border-strong); border-radius: var(--radius-m); background: var(--color-surface); }
+.layer-head .layer-material select { flex: 1; min-height: 28px; padding: 0 var(--space-2); border: 0; background: transparent; color: var(--color-text); font: inherit; }
+.layer-head select[aria-invalid="true"] { color: var(--color-error); }
+
+/* ---------- message rows that jump to a field ---------- */
+
+.notice-jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.notice:has(> .notice-jump) { padding: 0; }
+.notice-jump { padding: var(--space-2) var(--space-3); border-radius: var(--radius-s); }
+.notice-jump:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.notice-jump:focus-visible { outline-offset: -2px; }
+
+/* ---------- sketch ---------- */
+
+.sketch-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.sketch-bar .btn-icon { border-color: var(--color-border-strong); background: var(--color-surface); }
+.sketch-method { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); font-size: var(--font-size-s); }
+.sketch-method select {
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+/* operating hint of the sketch: a "?" button with a tooltip (SPEC_ETAPPE2 6, version 1.12) */
+.sketch-help { position: relative; display: inline-flex; }
+.sketch-help-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: 600;
+  line-height: 1;
+  cursor: help;
+}
+.sketch-help-button:hover { color: var(--color-text); }
+.sketch-help-tip {
+  display: none; /* hidden: out of the layout, adds nothing to the size or the overflow of any element */
+  position: fixed; /* shown at a place inside the window that the script sets (lib/tooltip-position.js); no parent cuts it off */
+  left: 0;
+  top: 0;
+  z-index: 20;
+  width: max-content;
+  max-width: min(26rem, calc(100vw - 16px));
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-s);
+  line-height: 1.4;
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+}
+.sketch-help.is-open .sketch-help-tip { display: block; }
+.sketch-coords {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 2;
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+  color: var(--color-text);
+  font-size: var(--font-size-s);
+  pointer-events: none;
+}
+.sketch-coords:empty { display: none; }
+.sketch-canvas {
+  position: relative;
+  flex: 1 1 0; /* the rest of the height that tool bar and legends leave; no fixed height (SPEC_ETAPPE2 1.3) */
+  min-height: 8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-m);
+  background: var(--sketch-bg);
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+.sketch-canvas.is-dragging { cursor: grabbing; }
+.sketch-svg { display: block; width: 100%; height: 100%; }
+.sketch-empty { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.sketch-legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+.legend-item { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-s); }
+.swatch { width: 14px; height: 14px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-s); background: var(--mat-color); }
+
+.mat-0 { --mat-color: var(--mat-1); }
+.mat-1 { --mat-color: var(--mat-2); }
+.mat-2 { --mat-color: var(--mat-3); }
+.mat-3 { --mat-color: var(--mat-4); }
+.mat-4 { --mat-color: var(--mat-5); }
+.mat-5 { --mat-color: var(--mat-6); }
+.mat-6 { --mat-color: var(--mat-7); }
+.mat-7 { --mat-color: var(--mat-8); }
+
+.sk-mat { fill: var(--mat-color); }
+.sk-outline { fill: none; stroke: var(--sketch-ground); stroke-width: 1; }
+.sk-ground { fill: none; stroke: var(--sketch-ground); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.sk-bottom { stroke: var(--sketch-ground); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.sk-water { fill: none; stroke: var(--sketch-water); stroke-width: 2.5; stroke-linejoin: round; stroke-dasharray: 9 5; }
+.sk-arrow line,
+.sk-load-bar { stroke: var(--sketch-load); stroke-width: 1.5; }
+.sk-arrow polygon { fill: var(--sketch-load); }
+.sk-grid { fill: none; stroke: var(--sketch-grid); stroke-width: 1; stroke-dasharray: 4 3; }
+.sk-centres circle { fill: var(--sketch-grid); }
+.sk-circle { fill: none; stroke: var(--sketch-circle); stroke-width: 1.5; }
+.sk-cross { fill: none; stroke: var(--sketch-circle); stroke-width: 1.5; }
+.sk-label { fill: var(--color-text); font-size: 12px; paint-order: stroke; stroke: var(--sketch-bg); stroke-width: 3px; stroke-linejoin: round; }
+
+/* supports in the sketch (SPEC_ETAPPE3 9): nail and anchor as lines into the slope, anchor free length thin and bond length thick, pile
+   vertical, shotcrete as a band on the ground line; the point where a support cuts the circle of the result */
+.sk-support { fill: none; stroke: var(--sketch-support); stroke-linecap: round; stroke-linejoin: round; }
+.sk-support-nail { stroke-width: 2.5; }
+.sk-support-free { stroke-width: 1.5; }
+.sk-support-bond { stroke-width: 5.5; stroke-linecap: butt; }
+.sk-support-pile { stroke-width: 4.5; }
+.sk-support-shell { stroke: var(--sketch-shotcrete); stroke-width: 6; stroke-opacity: 0.85; stroke-linecap: butt; }
+.sk-support-hit { fill: var(--sketch-support); stroke: var(--sketch-bg); stroke-width: 1.5; }
+.sk-support-label { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* ---------- page layout ---------- */
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  min-height: var(--header-height);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-1);
+}
+.brand { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-xl); font-weight: 700; }
+.brand svg { width: 24px; height: 24px; color: var(--color-accent); }
+.model-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  max-width: 28ch;
+  padding: 0 var(--space-3);
+  border-left: 1px solid var(--color-border);
+  font-weight: 600;
+}
+.model-name #model-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-name #dirty-mark { color: var(--color-warn); }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.header-spacer { flex: 1; }
+
+.app-header { flex: none; }
+.layout {
+  display: grid;
+  grid-template-columns: var(--input-width) var(--splitter-width) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.inputs,
+.output {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-4);
+  overflow: auto;
+}
+
+.splitter {
+  cursor: col-resize;
+  background: var(--color-border);
+  touch-action: none;
+}
+.splitter:hover,
+.splitter.is-dragging { background: var(--color-accent); }
+.splitter:focus-visible { outline-offset: -2px; background: var(--color-accent); }
+
+.output { overflow: hidden; }
+.output-head { flex: none; }
+.main-panels { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; }
+.main-panel { flex: 1 1 auto; min-height: 0; }
+.area {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+}
+/* overflow only as a last resort: in a window so low that tool bar, legends and the minimum drawing area do not fit, the legend stays reachable */
+.area-sketch { display: flex; flex-direction: column; overflow: auto; background: var(--sketch-bg); }
+.area-result { display: flex; flex-direction: column; gap: var(--space-2); }
+.main-panel[hidden] { display: none; }
+#sketch { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--space-2); min-height: 0; }
+#sketch > * { flex: none; }
+#sketch > .sketch-canvas { flex: 1 1 0; }
+.area-result .result-panels { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.messages-list { display: grid; gap: var(--space-2); }
+
+@media (max-width: 899.98px) {
+  body {
+    display: block;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+  .layout {
+    display: block;
+  }
+  .inputs,
+  .output,
+  .area-result .result-panels { overflow: visible; }
+  .sketch-canvas { flex: none; height: clamp(360px, 60dvh, 720px); min-height: 360px; } /* below 900 px the page scrolls (SPEC_ETAPPE2 1.3) */
+  .splitter { display: none; }
+  .model-name { max-width: none; border-left: 0; padding-left: 0; }
+}
+
+/* ---------- result: area head, tabs, overview ---------- */
+
+/* two levels of tabs: Sketch | Result on the right side, Overview | Slices | Messages inside Result */
+.output-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-4); border-bottom: 1px solid var(--color-border); }
+.main-tabs { border-bottom: 0; }
+.main-tabs .tab { margin-bottom: -1px; font-size: var(--font-size-l); }
+.output-head .run-progress { flex: 1 1 14rem; max-width: 30rem; }
+.export-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-left: auto; padding-bottom: var(--space-1); }
+.menu-wrap { position: relative; }
+.menu {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  right: 0;
+  z-index: 5;
+  min-width: 100%;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-2);
+}
+.menu[hidden] { display: none; }
+.menu-item {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.menu-item:hover { background: var(--color-surface-2); }
+.menu-item:focus-visible { outline-offset: -2px; background: var(--color-accent-soft); }
+.tab-mark { color: var(--color-accent); font-size: 0.75em; line-height: 1; }
+.tab-mark[hidden] { display: none; }
+.result-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border); }
+.result-head .tabs { border-bottom: 0; }
+.result-head .tab { margin-bottom: -1px; }
+.tab { display: inline-flex; align-items: center; gap: var(--space-2); }
+.tab-badge {
+  min-width: 1.5em;
+  padding: 0 var(--space-1);
+  border-radius: 999px;
+  background: var(--color-warn-bg);
+  color: var(--color-warn);
+  font-size: var(--font-size-s);
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+}
+.tab-badge.is-error { background: var(--color-error-bg); color: var(--color-error); }
+.tab-badge[hidden] { display: none; }
+.result-panels { display: grid; }
+.tab-panel { display: grid; align-content: start; gap: var(--space-3); padding-top: var(--space-3); min-width: 0; }
+.tab-panel[hidden] { display: none; }
+.result-section { display: grid; gap: var(--space-2); }
+.result-section h3 { font-size: var(--font-size-m); }
+.result-table { max-height: none; }
+table.compact td.no-surface { color: var(--color-text-muted); white-space: normal; }
+.result-section .code,
+table.compact .code { font-family: var(--font-mono); font-size: var(--font-size-s); font-weight: 600; }
+.method-choice { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+.method-choice input { flex: none; accent-color: var(--color-accent); width: 16px; height: 16px; margin: 0; }
+table.compact tbody tr.is-selected td { background: var(--color-accent-soft); font-weight: 600; }
+table.compact tbody tr.is-selected td:first-child { box-shadow: inset 3px 0 0 var(--color-accent); }
+table.compact tbody tr:has(.method-choice) { cursor: pointer; }
+.verdict { display: inline-block; padding: 0 var(--space-2); border-radius: var(--radius-s); font-weight: 600; }
+.verdict-ok { background: var(--color-ok-bg); color: var(--color-ok); }
+.verdict-fail { background: var(--color-error-bg); color: var(--color-error); }
+.counts { display: grid; gap: var(--space-2); }
+.counts-list { display: grid; gap: var(--space-1); padding-left: var(--space-3); }
+.counts-method { display: grid; gap: var(--space-1); padding: var(--space-1) 0; }
+.counts-by-method > summary { cursor: pointer; color: var(--color-text-muted); }
+table.compact td .method-choice input { width: 16px; min-width: 0; height: 16px; padding: 0; border: 0; background: none; }
+
+/* ---------- result in the sketch: contour, slip body, circles of the methods ---------- */
+
+.contour-0 { --cell: var(--contour-1); }
+.contour-1 { --cell: var(--contour-2); }
+.contour-2 { --cell: var(--contour-3); }
+.contour-3 { --cell: var(--contour-4); }
+.contour-4 { --cell: var(--contour-5); }
+.contour-5 { --cell: var(--contour-6); }
+.contour-6 { --cell: var(--contour-7); }
+.contour-none { --cell: var(--contour-none); }
+.sk-band { fill: var(--cell); stroke: var(--cell); stroke-width: 0.6; stroke-linejoin: round; }
+.sk-contour { opacity: 0.85; }
+.swatch.contour-0, .swatch.contour-1, .swatch.contour-2, .swatch.contour-3, .swatch.contour-4, .swatch.contour-5, .swatch.contour-6, .swatch.contour-none { background: var(--cell); }
+.rs-body { fill: var(--sketch-body); stroke: none; }
+.rs-halo { fill: none; stroke: var(--sketch-bg); stroke-width: 5; opacity: 0.85; }
+.rs-circle, .rs-line { fill: none; stroke: var(--line-color); stroke-width: 1.75; stroke-linecap: round; }
+.rs-circle.is-selected { stroke-width: 3.5; stroke-dasharray: none; }
+.rs-cross { fill: none; stroke: var(--line-color); stroke-width: 2; }
+.rs-label { font-weight: 600; }
+.m-bishop { --line-color: var(--method-bishop); stroke-dasharray: 8 3; }
+.m-janbu { --line-color: var(--method-janbu); stroke-dasharray: 2 3; }
+.m-janbuCorrected { --line-color: var(--method-janbuCorrected); stroke-dasharray: 9 3 2 3; }
+.m-spencer { --line-color: var(--method-spencer); stroke-dasharray: 1 4; }
+.rs-cross.m-bishop, .rs-cross.m-janbu, .rs-cross.m-janbuCorrected, .rs-cross.m-spencer { stroke-dasharray: none; }
+.sketch-result-legend { display: grid; gap: var(--space-1); }
+.sketch-result-legend:empty { display: none; }
+.line-sample { flex: none; }
+.legend-item .is-selected { font-weight: 700; }
+.legend-title { font-size: var(--font-size-s); font-weight: 600; width: 100%; }
+
+/* ---------- slice table ---------- */
+
+.slices-chooser { max-width: 28rem; }
+.slices-chooser .field-control select { flex: 1; min-height: 28px; padding: 0 var(--space-2); border: 0; background: transparent; color: var(--color-text); font: inherit; }
+.factor-list { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+.factor-list li { display: inline-flex; gap: var(--space-2); align-items: baseline; }
+.factor-name { color: var(--color-text-muted); }
+.factor-value { font-weight: 600; }
+.factor-value.no-surface { font-weight: 400; }
+.slices-table { max-height: 26rem; }
+.copy-status { min-width: 12ch; }
+
+/* ---------- axes and grid of the sketch ---------- */
+
+.sk-gridlines line { stroke: var(--sketch-gridline); stroke-width: 1; shape-rendering: crispEdges; }
+.sk-axis-line { stroke: var(--sketch-axis); stroke-width: 1; shape-rendering: crispEdges; }
+.sk-axis-label, .sk-axis-title { fill: var(--sketch-axis); font-size: 11px; paint-order: stroke; stroke: var(--sketch-bg); stroke-width: 3px; stroke-linejoin: round; font-variant-numeric: tabular-nums; }
+.sk-axis-title { font-weight: 600; }
+.rs-radius { stroke: var(--line-color); stroke-width: 1.25; stroke-dasharray: 5 4; fill: none; }
+
+/* ---------- editing in the sketch: handles, input field at a node ---------- */
+
+.sk-handle { fill: var(--handle-fill); stroke: var(--handle-stroke); stroke-width: 2; cursor: move; }
+.sk-handle.is-active { fill: var(--handle-stroke); stroke: var(--handle-fill); }
+.sk-handle-radius { stroke-linejoin: round; }
+.sk-readout { font-variant-numeric: tabular-nums; font-weight: 600; pointer-events: none; }
+.sketch-canvas.is-over-handle { cursor: move; }
+.sketch-canvas.is-moving-node { cursor: grabbing; }
+.node-editor {
+  position: absolute;
+  z-index: 4;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 11rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-2);
+  cursor: default;
+}
+.node-editor-row { display: grid; gap: var(--space-1); }
+.node-editor-label { display: flex; align-items: center; gap: var(--space-2); }
+.node-editor-key { width: 1.2em; color: var(--color-text-muted); font-weight: 600; }
+.node-editor input {
+  flex: 1;
+  min-width: 0;
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-s);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  text-align: right;
+}
+.node-editor input.is-invalid { border-color: var(--color-error); }
+.node-editor-unit { color: var(--color-text-muted); font-size: var(--font-size-s); }
+.node-editor-error { color: var(--color-error); font-size: var(--font-size-s); }
+.node-editor-error[hidden] { display: none; }
+.node-editor-actions { display: flex; gap: var(--space-2); }
+.node-editor-hint { margin: 0; }
+.support-editor { width: min(26rem, calc(100% - 8px)); max-height: calc(100% - 8px); overflow: auto; }
+.support-editor-title { font-size: var(--font-size-m); }
+.support-editor .node-editor-unit { min-width: 2.6rem; }
+.support-editor-fields { display: grid; gap: var(--space-1); }
+.support-editor-key { width: 9rem; flex: none; color: var(--color-text-muted); font-weight: 600; font-size: var(--font-size-s); }
+.support-editor select {
+  flex: 1;
+  min-width: 0;
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-s);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.node-editor-row[hidden] { display: none; }
+
+/* ---------- graphic export: elements that exist only in the exported SVG (drawn under color-scheme: light) ---------- */
+
+.ex-ground { fill: var(--export-ground); stroke: none; }
+.ex-frame { fill: none; stroke: var(--color-border); stroke-width: 1; }
+.ex-text { fill: var(--color-text); font-size: 12px; stroke: none; }
+.ex-bold { font-weight: 700; }
+.ex-swatch { fill: var(--mat-color, var(--cell)); stroke: var(--color-border-strong); stroke-width: 1; }
+
+/* ---------- room for the sketch: full screen ---------- */
+
+#sketch:fullscreen {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--sketch-bg);
+  overflow: auto;
+}
+#sketch:fullscreen .sketch-canvas { height: auto; min-height: 0; }
+
+/* ---------- result document: print view (SPEC_ETAPPE2 8.5) ---------- */
+
+#print-doc { display: none; }
+
+@page { margin: 15mm; } /* paper size and orientation come from the print dialog (SPEC_ETAPPE2 8.5, version 1.11) */
+
+@media print {
+  /* the page is replaced by the document as soon as it has been filled (a result exists); otherwise it prints as it is */
+  html:has(#print-doc:not(:empty)) { height: auto; }
+  body:has(#print-doc:not(:empty)) {
+    display: block;
+    height: auto;
+    overflow: visible;
+    background: var(--export-ground);
+  }
+  body:has(#print-doc:not(:empty)) > :not(#print-doc) { display: none !important; }
+  #print-doc:not(:empty) {
+    display: block;
+    color-scheme: light; /* the document is always light, also when the page is dark */
+    background: var(--export-ground);
+    color: var(--color-text);
+    font-size: 10pt;
+    line-height: 1.35;
+  }
+  .pd-frame { width: 100%; border-collapse: collapse; }
+  .pd-frame > tbody > tr > td,
+  .pd-frame > tfoot > tr > td { padding: 0; }
+  .pd-frame > tfoot { display: table-footer-group; }
+  .pd-head h1 { margin: 0 0 3mm; font-size: 16pt; }
+  .pd-meta { display: grid; grid-template-columns: max-content 1fr max-content 1fr; gap: 1mm 6mm; margin: 0 0 3mm; }
+  .pd-meta dt { color: var(--color-text-muted); }
+  .pd-meta dd { margin: 0; font-weight: 600; }
+  .pd-note { margin: 2mm 0; }
+  .pd-figure { margin: 4mm 0; break-inside: avoid; }
+  /* the graphic is drawn for 180 mm (lib/page-graphic.js): 1 unit = 1 px, text 8 pt. On a wider page it keeps 180 mm, on a narrower one it shrinks (max-width). */
+  .pd-figure svg { display: block; width: 180mm; max-width: 100%; height: auto; margin: 0 auto; }
+  .pd-section h2 { margin: 4mm 0 1mm; font-size: 12pt; break-after: avoid; }
+  .pd-which { margin: 0 0 2mm; color: var(--color-text-muted); break-after: avoid; }
+  .pd-table { width: 100%; border-collapse: collapse; font-size: 8pt; font-variant-numeric: tabular-nums; }
+  .pd-table thead { display: table-header-group; } /* the head is repeated on every page */
+  .pd-table tr { break-inside: avoid; }
+  .pd-table th,
+  .pd-table td { padding: 0.6mm 1.5mm; border-bottom: 0.2mm solid var(--color-border-strong); }
+  .pd-table th { border-bottom-width: 0.4mm; text-align: right; font-weight: 600; }
+  .pd-table th.idx,
+  .pd-table td.idx { text-align: left; width: 1%; }
+  .pd-table td.num { text-align: right; }
+  .pd-table th.txt,
+  .pd-table td.txt { text-align: left; } /* the table of the supports: text columns on the left */
+  /* section "Verification SIA 267" (SPEC_ETAPPE4 13b): factors, rule as text and set formulas (MathML), numbers of the chosen method, table per method */
+  .pd-verification h3 { margin: 3mm 0 1mm; font-size: 10pt; break-after: avoid; }
+  .pd-verification .pd-rule { margin: 1mm 0; break-after: avoid; }
+  .pd-math { margin: 1mm 0 2mm 6mm; break-inside: avoid; }
+  .pd-math math { margin: 1mm 0; font-size: 11pt; }
+  .pd-numbers { margin: 1mm 0 2mm 6mm; break-inside: avoid; }
+  .pd-numbers math { font-size: 11pt; }
+  .pd-verdict { font-weight: 600; }
+  .pd-source { margin: 1mm 0; color: var(--color-text-muted); font-size: 8pt; }
+  .pd-factors, .pd-methods { margin: 1mm 0 2mm; }
+  .pd-foot { display: flex; justify-content: space-between; gap: 6mm; margin: 4mm 0 0; padding-top: 1.5mm; border-top: 0.2mm solid var(--color-border-strong); color: var(--color-text-muted); font-size: 8pt; }
+}
+
+/* ---------- Etappe 4 (SPEC_ETAPPE4 11 to 13a) ---------- */
+
+/* header: the licence link, small at the right */
+.licence-link { font-size: var(--font-size-s); color: var(--color-text-muted); text-decoration: underline; }
+.licence-link:hover { color: var(--color-accent); }
+
+/* table of the single surfaces: ID, type ("Kreis", "Polylinie" fully readable), x_c, z_c, R and the two buttons fit in the width of the input area
+   (about 370 px) without a horizontal scroll bar (order 28): narrow cell padding, small minimum widths */
+.table-block[data-path="surfaces"] table.compact th,
+.table-block[data-path="surfaces"] table.compact td { padding: 0 2px; }
+.table-block[data-path="surfaces"] table.compact td input { min-width: 0; padding: 0 2px; }
+.table-block[data-path="surfaces"] table.compact td.num input { min-width: 5ch; }
+.table-block[data-path="surfaces"] table.compact td.surf-id input { min-width: 3ch; }
+.table-block[data-path="surfaces"] table.compact td.actions .btn-icon { width: 22px; }
+.table-block[data-path="surfaces"] table.compact td.surf-type select { min-width: 9ch; padding: 0; }
+
+/* table of points of a polyline below the table of the single surfaces */
+.surface-points { margin-top: var(--space-2); }
+.surface-points > summary { cursor: pointer; font-weight: 600; padding: var(--space-1) 0; }
+
+/* single polylines in the sketch, line of the tension crack zone, crack and its water, circle before the optimisation */
+.sk-poly { fill: none; stroke: var(--sketch-circle); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.sk-crackzone { fill: none; stroke: var(--sketch-load); stroke-width: 1.25; stroke-dasharray: 7 4; }
+.sk-crack { stroke: var(--sketch-ground); stroke-width: 2.5; stroke-linecap: butt; }
+.sk-crack-water { stroke: var(--sketch-water); stroke-width: 3.5; stroke-linecap: butt; }
+.rs-search { fill: none; stroke: var(--line-color); stroke-width: 1.25; stroke-dasharray: 4 3; }
+
+/* drawing mode of a polyline */
+.sketch-canvas.is-drawing { cursor: crosshair; }
+.sk-draw-line { fill: none; stroke: var(--sketch-circle); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.sk-draw-set { fill: none; stroke: var(--sketch-circle); stroke-width: 2.5; stroke-linejoin: round; }
+.sk-draw-point { fill: var(--handle-fill); stroke: var(--sketch-circle); stroke-width: 2; }
+.sk-draw-hint { font-weight: 600; pointer-events: none; }
+.sketch-draw-note { position: absolute; left: var(--space-2); top: var(--space-2); margin: 0; padding: var(--space-1) var(--space-2); border-radius: var(--radius-s, 4px); background: var(--color-surface); border: 1px solid var(--color-border); pointer-events: none; }
+
+/* drawing mode: the choice of what is drawn (SPEC_ETAPPE4 12a), the same look as the other choices of the bar */
+.sketch-draw-select {
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}

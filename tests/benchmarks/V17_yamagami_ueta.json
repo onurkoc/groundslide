@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "name": "V17 Yamagami & Ueta",
+    "description": "Slide-Verifikation #17",
+    "units": "SI"
+  },
+  "ground": [
+    [
+      0,
+      5
+    ],
+    [
+      5,
+      5
+    ],
+    [
+      15,
+      10
+    ],
+    [
+      25,
+      10
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "",
+      "gamma": 17.64,
+      "gammaSat": 17.64,
+      "model": "drained",
+      "c": 9.8,
+      "phi": 10
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "bishop"
+    ],
+    "direction": "left",
+    "slices": 50,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1.0,
+    "G": 1.0,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": {
+    "grid": {
+      "xMin": 2,
+      "xMax": 16,
+      "zMin": 10,
+      "zMax": 24,
+      "nx": 21,
+      "nz": 21
+    },
+    "radii": 40
+  },
+  "surfaces": [],
+  "expected": {
+    "source": "Rocscience, Slide Slope Stability Verification Manual (Slide 7.0), Problem #17; Suchwert",
+    "slide2Version": "Slide 7.0",
+    "date": "2023-07-28",
+    "search": {
+      "bishop": 1.344,
+      "janbu": null,
+      "janbuCorrected": null,
+      "spencer": null
+    },
+    "surfaces": {}
+  }
+}

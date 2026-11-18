@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "name": "S6 one row of piles",
+    "description": "Geometry and soil as B1 (Slide2 Quick Start Tutorial). Four micro piles, passive, shear 20 kN, force parallel to the surface. Elements per SPEC_ETAPPE3 7.2.1.",
+    "units": "SI",
+    "source": "Slide2 9.02, Auto Refine Search, Onur",
+    "date": "2026-11-16"
+  },
+  "ground": [
+    [
+      0,
+      30
+    ],
+    [
+      50,
+      30
+    ],
+    [
+      80,
+      50
+    ],
+    [
+      130,
+      50
+    ]
+  ],
+  "bottom": 0,
+  "layers": [
+    {
+      "material": "M1",
+      "top": null
+    }
+  ],
+  "materials": {
+    "M1": {
+      "name": "Soil 1",
+      "gamma": 19,
+      "gammaSat": 20,
+      "model": "drained",
+      "c": 5,
+      "phi": 30
+    }
+  },
+  "water": null,
+  "loads": [],
+  "seismic": {
+    "kh": 0
+  },
+  "analysis": {
+    "mode": "characteristic",
+    "methods": [
+      "spencer"
+    ],
+    "direction": "left",
+    "slices": 50,
+    "tolerance": 0.0001,
+    "maxIterations": 100
+  },
+  "partialFactors": {
+    "phi": 1.2,
+    "c": 1.5,
+    "cu": 1.5,
+    "gamma": 1,
+    "G": 1,
+    "Q": 1.3,
+    "R": 1.1
+  },
+  "search": {
+    "grid": {
+      "xMin": 20,
+      "xMax": 80,
+      "zMin": 40,
+      "zMax": 120,
+      "nx": 31,
+      "nz": 41
+    },
+    "radii": 40
+  },
+  "surfaces": [
+    {
+      "id": "SL2",
+      "xc": 42.714,
+      "zc": 77.494,
+      "R": 48.022
+    }
+  ],
+  "supports": [
+    {
+      "id": "P1",
+      "type": "pile",
+      "x": 75.1675240564717,
+      "z": 46.77834937098113,
+      "length": 15,
+      "shear": 20,
+      "spacing": 1
+    },
+    {
+      "id": "P2",
+      "type": "pile",
+      "x": 69.3431719961068,
+      "z": 42.89544799740454,
+      "length": 15,
+      "shear": 20,
+      "spacing": 1
+    },
+    {
+      "id": "P3",
+      "type": "pile",
+      "x": 63.5188199357419,
+      "z": 39.01254662382794,
+      "length": 15,
+      "shear": 20,
+      "spacing": 1
+    },
+    {
+      "id": "P4",
+      "type": "pile",
+      "x": 57.694467875377,
+      "z": 35.129645250251336,
+      "length": 15,
+      "shear": 20,
+      "spacing": 1
+    }
+  ],
+  "expected": {
+    "source": "Slide2 9.02, Auto Refine Search, Onur",
+    "slide2Version": "9.02",
+    "date": "2026-11-16",
+    "search": {
+      "spencer": 1.21174
+    },
+    "surfaces": {
+      "SL2": {
+        "spencer": 1.21174
+      }
+    }
+  }
+}
