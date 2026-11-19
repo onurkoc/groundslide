@@ -120,13 +120,16 @@ test('a new layer: ordered by the height of the line in the middle of the model 
   assert.deepEqual(b.layers.map((l) => l.material), [m.layers[0].material, m.layers[1].material, m.layers[1].material]);
   // the model stays valid for the core where the lines do not cross
   assert.equal(validateModel(b).valid, true, JSON.stringify(validateModel(b).errors));
-  // a horizontal line between the ground and the boundary leaves the ground at the left edge: written as it is, the check reports it
-  assert.equal(validateModel(a).valid, false);
-  // a line above the ground is written as it is: the check reports it (no silent correction)
+  // a horizontal line between the ground and the boundary leaves the ground at the left edge: written as it is;
+  // since SPEC 4 v1.8 the core clips it at the ground, the model is valid (until 1.7: E_LAYER_CROSS)
+  assert.ok(a.layers[1].top.every(([, z]) => z === high), 'written as drawn');
+  assert.equal(validateModel(a).valid, true, JSON.stringify(validateModel(a).errors));
+  // a line above the ground is written as it is (no correction of the input); SPEC 4 v1.8: valid, the layer has thickness 0
   const c = structuredClone(m);
   applyDrawing(draw('layer', c, [[10, 80], [120, 80]]).drawing, c);
   assert.equal(c.layers.length, 3);
-  assert.equal(validateModel(c).valid, false);
+  assert.ok(c.layers[1].top.every(([, z]) => z === 80), 'written as drawn');
+  assert.equal(validateModel(c).valid, true, JSON.stringify(validateModel(c).errors));
 });
 
 test('layer boundary and water line: clicks outside the model width set no point; without a valid ground there is no width', () => {
@@ -163,8 +166,10 @@ test('ground: replaces `ground` completely, ordered by x; the model width follow
   // the click at x = -10 continues the direction (to the left): it is set; the order is ascending
   assert.deepEqual(m.ground, [[-10, 30], [0, 30], [60, 30], [100, 40]]);
   assert.deepEqual(modelWidth(m), { xMin: -10, xMax: 100 });
-  // the layers and the water line that no longer fit are reported by the check, not changed
-  assert.equal(validateModel(m).valid, false);
+  // the layers are not changed; since SPEC 4 v1.8 a boundary beyond the model width is cut there, the model stays valid
+  // (until 1.7: E_LAYER_WIDTH)
+  assert.deepEqual(m.layers, b3().layers);
+  assert.equal(validateModel(m).valid, true, JSON.stringify(validateModel(m).errors));
   assert.deepEqual(draw('ground', m, [[10, 5], [20, 5], [15, 6]]).rejected, ['direction']);
   assert.equal(canFinish(draw('ground', m, [[10, 5]]).drawing, m).ok, false);
   assert.equal(canFinish(draw('ground', m, [[10, 5]]).drawing, m).reason, 'min');
@@ -370,3 +375,13 @@ test('every kind is ONE step of the history: undo gives the model before the dra
   assert.match(main, /function modelEdited\(\) \{\s*dispatchResult\(\{ type: 'model-changed' \}\);/);
 });
 
+
+test('addLayerBoundary: a short boundary (SPEC 4 v1.8) still orders a new layer by its effective height', () => {
+  const model = {
+    ground: [[0, 10], [10, 10], [25, 17.5], [35, 17.5]],
+    layers: [{ material: 'M1', top: null }, { material: 'M2', top: [[0, 5], [10, 5]] }], // ends left of the middle (x = 17.5)
+  };
+  const r = addLayerBoundary(model, [[0, 3], [35, 3]]);
+  assert.deepEqual(r, { index: 2, created: true });
+  assert.equal(model.layers[2].material, 'M2');
+});

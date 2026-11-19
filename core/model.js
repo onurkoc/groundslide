@@ -2,6 +2,7 @@
 // Pure functions, no DOM or browser access.
 
 import { heightAt } from './geometry.js';
+import { effectiveBoundary } from './layers.js';
 
 const TOL = 1e-9;
 
@@ -162,27 +163,28 @@ function validateModelInput(model) {
         }
       }
       if (!strict || !groundOk) return;
-      const first = layer.top[0][0];
-      const last = layer.top[layer.top.length - 1][0];
-      if (first > xMin + TOL || last < xMax - TOL) {
-        err(
-          'E_LAYER_WIDTH',
-          `${path}.top must span the whole model width [${xMin}, ${xMax}], but spans [${first}, ${last}].`,
-          `${path}.top`,
-        );
-        return;
-      }
-      // A boundary may touch the one above but not cross it.
-      const above = k === 1 ? ground : layers[k - 1]?.top;
-      if (k > 1 && !(isPolyline(above) && above.every((p, i) => i === 0 || p[0] > above[i - 1][0]))) return;
-      const xs = new Set();
-      for (const p of layer.top) if (p[0] >= xMin - TOL && p[0] <= xMax + TOL) xs.add(p[0]);
-      for (const p of above) if (p[0] >= xMin - TOL && p[0] <= xMax + TOL) xs.add(p[0]);
+      // SPEC 4 (version 1.8): the effective boundary (extended to the model width, clipped at the ground)
+      // may touch the effective boundary above but not cross it. The ground clips both, so for k = 1
+      // there is nothing to check.
+      if (k === 1) return;
+      const above = layers[k - 1]?.top;
+      if (!(isPolyline(above) && above.every((p, i) => i === 0 || p[0] > above[i - 1][0]))) return;
+      const effHere = effectiveBoundary(layer.top, ground);
+      const effAbove = effectiveBoundary(above, ground);
+      const xs = new Set([...effHere.map((p) => p[0]), ...effAbove.map((p) => p[0])]);
       for (const x of xs) {
-        const zl = heightAt(layer.top, x, 'max');
-        const za = heightAt(above, x, 'min');
-        if (Number.isNaN(zl) || Number.isNaN(za)) continue;
-        if (zl > za + TOL) {
+        // at a vertical piece (vertical ground step) compare like with like: upper end with upper end, lower with lower
+        let zl = NaN;
+        let za = NaN;
+        for (const mode of ['max', 'min']) {
+          const h = heightAt(effHere, x, mode);
+          const a = heightAt(effAbove, x, mode);
+          if (!(h > a + TOL)) continue;
+          zl = h;
+          za = a;
+          break;
+        }
+        if (!Number.isNaN(zl)) {
           err(
             'E_LAYER_CROSS',
             `${path}.top crosses the boundary above it at x=${x} (z=${zl} > ${za}).`,

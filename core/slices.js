@@ -7,6 +7,7 @@
 // and returns the slices in the CALCULATION frame (slope falls to the right,
 // sliding towards +x, alpha > 0 where the base falls towards +x).
 // toInputFrame() maps a result back to the input frame.
+import { withEffectiveLayerTops } from './layers.js';
 
 import {
   arcHeight,
@@ -63,7 +64,7 @@ function crackOf(m, base) {
 export function buildSlices(model, circle, opts = {}) {
   if (opts.validate !== false) assertValidModel(model);
   const info = normalizeModel(model);
-  const res = buildSlicesNormalized(info.model, circleToCore(circle, info));
+  const res = buildSlicesNormalized(withEffectiveLayerTops(info.model), circleToCore(circle, info));
   return { ...res, mirrored: info.mirrored, direction: info.direction };
 }
 
@@ -171,7 +172,7 @@ export function buildSlicesPolyline(model, points, opts = {}) {
   const info = normalizeModel(model);
   const problem = polylinePointsProblem(points);
   if (problem) return { ...invalid(CODE_SURFACE_POINTS, problem), mirrored: info.mirrored, direction: info.direction };
-  const res = buildSlicesPolylineNormalized(info.model, polylineToCore(points, info));
+  const res = buildSlicesPolylineNormalized(withEffectiveLayerTops(info.model), polylineToCore(points, info));
   return { ...res, mirrored: info.mirrored, direction: info.direction };
 }
 

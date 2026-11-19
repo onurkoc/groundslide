@@ -632,6 +632,7 @@ table.compact td.col-choice select { min-width: 11ch; }
 .sk-outline { fill: none; stroke: var(--sketch-ground); stroke-width: 1; }
 .sk-ground { fill: none; stroke: var(--sketch-ground); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
 .sk-bottom { stroke: var(--sketch-ground); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.sk-layer-line { fill: none; stroke: var(--sketch-ground); stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.7; }
 .sk-water { fill: none; stroke: var(--sketch-water); stroke-width: 2.5; stroke-linejoin: round; stroke-dasharray: 9 5; }
 .sk-arrow line,
 .sk-load-bar { stroke: var(--sketch-load); stroke-width: 1.5; }

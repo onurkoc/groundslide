@@ -144,16 +144,33 @@ violates('E_LAYER_TOP_MISSING', (m) => {
 violates('E_LAYER_ORDER', (m) => {
   m.layers.push({ material: 'M1', top: [[0, 5], [20, 5], [20, 6], [35, 6]] });
 });
-violates('E_LAYER_WIDTH', (m) => {
+// SPEC 4 version 1.8: a boundary may be shorter than the model width and may lie above the ground
+// (E_LAYER_WIDTH no longer exists; E_LAYER_CROSS compares effective boundaries only).
+function validLayers(label, mutate) {
+  test(`T6 valid (SPEC 4 v1.8): ${label}`, () => {
+    const m = base();
+    mutate(m);
+    const { valid, errors } = validateModel(m);
+    assert.equal(valid, true, errors.map((e) => e.code).join(', '));
+  });
+}
+validLayers('layer boundary shorter than the model width', (m) => {
   m.layers.push({ material: 'M1', top: [[0, 5], [30, 5]] });
 });
-violates('E_LAYER_CROSS', (m) => {
+validLayers('layer boundary above the ground', (m) => {
   m.layers.push({ material: 'M1', top: [[0, 5], [20, 18], [35, 5]] }); // above the ground at x = 20
+});
+validLayers('layer boundary entirely above the ground', (m) => {
+  m.layers.push({ material: 'M1', top: [[0, 30], [35, 30]] });
 });
 violates('E_LAYER_CROSS', (m) => {
   m.layers.push({ material: 'M1', top: [[0, 8], [35, 8]] });
   m.layers.push({ material: 'M1', top: [[0, 7], [35, 9]] }); // crosses the boundary above
 }, 'E_LAYER_CROSS (between two layer boundaries)');
+violates('E_LAYER_CROSS', (m) => {
+  m.layers.push({ material: 'M1', top: [[0, 8], [20, 30], [35, 8]] }); // above the ground in the middle
+  m.layers.push({ material: 'M1', top: [[0, 9], [20, 30], [35, 7]] }); // above the one above at x = 0, below ground
+}, 'E_LAYER_CROSS (both boundaries partly above the ground)');
 violates('E_MATERIAL_UNKNOWN', (m) => { m.layers[0].material = 'X9'; });
 violates('E_MATERIAL_INVALID', (m) => { m.materials.M1.phi = -5; }, 'E_MATERIAL_INVALID (phi < 0)');
 violates('E_MATERIAL_INVALID', (m) => { m.materials.M1.gamma = 0; }, 'E_MATERIAL_INVALID (gamma = 0)');
@@ -260,3 +277,18 @@ test('T6 partialFactors.gamma = 1.0 is accepted', () => {
 violates('E_SEARCH_INVALID', (m) => { m.search = { grid: { xMin: 5, xMax: 0, zMin: 0, zMax: 1, nx: 3, nz: 3 }, radii: 10 }; }, 'E_SEARCH_INVALID (xMin > xMax)');
 violates('E_SEARCH_INVALID', (m) => { m.search = { grid: { xMin: 0, xMax: 5, zMin: 0, zMax: 1, nx: 0, nz: 3 }, radii: 10 }; }, 'E_SEARCH_INVALID (nx = 0)');
 violates('E_SEARCH_INVALID', (m) => { m.search = { grid: { xMin: 0, xMax: 5, zMin: 0, zMax: 1, nx: 3, nz: 3 }, radii: 0 }; }, 'E_SEARCH_INVALID (radii)');
+
+// SPEC 4 v1.8 with a vertical step in the ground: both boundaries clipped onto the step must not count as crossing.
+test('T6 valid (SPEC 4 v1.8): two boundaries clipped onto a vertical ground step', () => {
+  const m = base();
+  m.ground = [[0, 10], [5, 10], [5, 5], [10, 5]];
+  m.bottom = 0;
+  m.layers = [m.layers[0], { material: m.layers[0].material, top: [[0, 8], [10, 8]] }, { material: m.layers[0].material, top: [[0, 7], [10, 7]] }];
+  assert.equal(validateModel(m).valid, true, validateModel(m).errors.map((e) => e.message).join('; '));
+  m.layers[1].top = [[0, 20], [10, 20]];
+  m.layers[2].top = [[0, 20], [10, 20]]; // both entirely above the ground
+  assert.equal(validateModel(m).valid, true, validateModel(m).errors.map((e) => e.message).join('; '));
+  m.layers[1].top = [[0, 7], [10, 7]];
+  m.layers[2].top = [[0, 8], [10, 4]]; // above the boundary above at x = 0
+  assert.ok(validateModel(m).errors.some((e) => e.code === 'E_LAYER_CROSS'));
+});

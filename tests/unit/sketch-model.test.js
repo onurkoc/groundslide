@@ -121,3 +121,22 @@ test('heightAt, validPoints, colorIndex', () => {
   assert.equal(colorIndex(8), 0);
   assert.equal(colorIndex(10), 2);
 });
+
+// SPEC 4 version 1.8: layers are filled from the effective boundary; the entered boundary is a line of its own.
+test('layer boundary shorter than the model width: the fill reaches the model edge', () => {
+  const m = loadBenchmark('H1_handcalc_dry');
+  m.layers.push({ material: m.layers[0].material, top: [[0, 5], [30, 5]] });
+  const s = buildSketch(m);
+  const xs = s.layers.at(-1).points.map((p) => p[0]);
+  assert.equal(Math.min(...xs), 0);
+  assert.equal(Math.max(...xs), 35);
+});
+
+test('layer boundary above the ground: no fill above the ground, the entered line is kept', () => {
+  const m = loadBenchmark('H1_handcalc_dry');
+  m.layers.push({ material: m.layers[0].material, top: [[0, 5], [20, 18], [35, 5]] });
+  const s = buildSketch(m);
+  for (const [x, z] of s.layers.at(-1).points) assert.ok(z <= heightAt(s.ground, x) + 1e-9, `x=${x}, z=${z}`);
+  const line = s.layerLines.find((l) => l.index === m.layers.length - 1);
+  assert.ok(line.points.some(([x, z]) => x === 20 && z === 18));
+});

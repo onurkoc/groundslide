@@ -570,6 +570,8 @@ export function createSketch({ container, getLang, edit }) {
       svg.append(s('g', { 'clip-path': 'url(#sk-clip)' }, sketch.layers.map((l) => s('polygon', { class: `sk-mat mat-${l.colorIndex}`, points: pts(view, l.points) }))));
     }
     if (sketch.clip) svg.append(s('polygon', { class: 'sk-outline', points: pts(view, sketch.clip) }));
+    // the entered layer boundaries, thin and dashed, also where they run above the ground (SPEC 4 v1.8)
+    for (const l of sketch.layerLines || []) svg.append(s('polyline', { class: 'sk-layer-line', points: pts(view, l.points) }));
     drawGridLines(svg, view, size);
     drawContour(svg, view);
     drawSlipBody(svg, view);

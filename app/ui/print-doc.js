@@ -101,6 +101,8 @@ function math(node, display) {
 /** Section "Verification SIA 267" (SPEC_ETAPPE4 13b): partial factors, rule (text and formulas), the numbers of the chosen method, the table per method. */
 function verificationSection(v) {
   const parts = [h('h2', { text: v.title })];
+  // SPEC_ETAPPE4 13e: the head shows a single surface; say which surface this verification belongs to
+  if (v.reference) parts.push(h('p', { class: 'pd-note pd-reference', text: v.reference }));
   // (a) the partial factors of soil and loads as calculated
   parts.push(h('h3', { text: v.factors.title }));
   parts.push(h('table', { class: 'pd-table pd-factors' }, [

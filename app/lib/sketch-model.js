@@ -4,6 +4,7 @@
 // invalid model. All coordinates are world coordinates (m).
 
 import { boundsOf } from './view.js';
+import { effectiveBoundary, extendBoundary, heightAt as coreHeightAt } from '../../core/index.js';
 
 export const MATERIAL_COLORS = 8; // --mat-1 ... --mat-8, used cyclically
 export const MAX_GRID_POINTS = 2000; // above: only the rectangle, no centres
@@ -30,6 +31,16 @@ export function heightAt(points, x) {
     }
   }
   return best;
+}
+
+/** x strictly increasing (only then a layer boundary has an effective line, SPEC 4). */
+const increasing = (pts) => pts.every((p, i) => i === 0 || p[0] > pts[i - 1][0]);
+
+/** Does a layer boundary span the ground width and lie nowhere above the ground (then it is its own effective boundary)? */
+function fitsBelowGround(points, ground) {
+  if (points[0][0] > ground[0][0] || points[points.length - 1][0] < ground[ground.length - 1][0]) return false;
+  const xs = [...points, ...ground].map((p) => p[0]).filter((x) => x >= ground[0][0] && x <= ground[ground.length - 1][0]);
+  return xs.every((x) => coreHeightAt(points, x, 'max') <= coreHeightAt(ground, x, 'min') + 1e-9);
 }
 
 /**
@@ -61,7 +72,8 @@ function safely(fn, fallback) {
 
 /**
  * Description of the sketch:
- * { bounds, ground, bottom, clip, layers, legend, water, loads, grid, surfaces, polylines, crackZone }
+ * { bounds, ground, bottom, clip, layers, layerLines, legend, water, loads, grid, surfaces, polylines, crackZone }
+ * layerLines: the entered layer boundaries (k >= 1) extended to the model width ({ index, points }), SPEC 4 v1.8;
  * surfaces: single circles; polylines: single polylines that can be drawn ({ id, index, points }); crackZone: { depth, points } the
  * line parallel to the ground at the depth of the tension crack, or null (SPEC_ETAPPE4 12)
  */
@@ -83,8 +95,11 @@ export function buildSketch(model) {
       if (!isObject(layer)) return;
       const position = typeof layer.material === 'string' ? materialIds.indexOf(layer.material) : -1;
       if (position < 0) return;
-      const boundary = index === 0 ? ground : validPoints(layer.top);
-      if (boundary.length < 2) return;
+      // SPEC 4 v1.8: filled from the effective boundary (extended to the model width, clipped at the ground);
+      // a boundary that already spans the width below the ground is drawn with its own points
+      const entered = index === 0 ? ground : validPoints(layer.top);
+      if (entered.length < 2) return;
+      const boundary = index === 0 || !groundOk || !increasing(entered) || fitsBelowGround(entered, ground) ? entered : effectiveBoundary(entered, ground);
       out.push({
         index,
         materialId: layer.material,
@@ -93,6 +108,20 @@ export function buildSketch(model) {
       });
     });
     return out;
+  }, []);
+
+  // the entered layer boundaries (k >= 1) over the model width, drawn as thin lines: also the part above the ground
+  const layerLines = safely(() => {
+    if (!groundOk || !Array.isArray(m.layers)) return [];
+    const xMin = ground[0][0];
+    const xMax = ground[ground.length - 1][0];
+    return m.layers
+      .map((layer, index) => {
+        if (index === 0 || !isObject(layer)) return null;
+        const pts = validPoints(layer.top);
+        return pts.length >= 2 && increasing(pts) ? { index, points: extendBoundary(pts, xMin, xMax) } : null;
+      })
+      .filter(Boolean);
   }, []);
 
   const legend = materialIds.map((id, position) => ({
@@ -163,5 +192,5 @@ export function buildSketch(model) {
   for (const s of surfaces) framePoints.push([s.xc, s.zc]);
   for (const p of polylines) framePoints.push(...p.points);
 
-  return { bounds: boundsOf(framePoints), ground, bottom, clip, layers, legend, water, loads, grid, surfaces, polylines, crackZone };
+  return { bounds: boundsOf(framePoints), ground, bottom, clip, layers, layerLines, legend, water, loads, grid, surfaces, polylines, crackZone };
 }

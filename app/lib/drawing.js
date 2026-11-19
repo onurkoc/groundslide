@@ -7,6 +7,7 @@
 
 import { drawingStep, finishedPolyline } from './result-sketch.js';
 import { heightAt } from './sketch-model.js';
+import { effectiveBoundary } from '../../core/index.js';
 import { slopeDirection, groundBetween } from './supports-sketch.js';
 import { insertSupportAfter } from './supports-edit.js';
 import { appendSurface, nextSurfaceId } from './edit.js';
@@ -185,6 +186,13 @@ function heightOn(points, x) {
   return heightAt(points, x);
 }
 
+/** Height of the effective layer boundary at x (SPEC 4 v1.8); the plain height when the ground is no usable line; null when the boundary is no line. */
+function effectiveHeightOn(points, ground, x) {
+  if (heightOn(points, points?.[0]?.[0]) === null || !points.every((q, i) => i === 0 || q[0] > points[i - 1][0])) return null;
+  if (heightOn(ground, x) === null || !ground.every((q, i) => i === 0 || q[0] >= ground[i - 1][0])) return heightOn(points, x);
+  return heightOn(effectiveBoundary(points, ground), x);
+}
+
 /**
  * A layer boundary into the model (SPEC_ETAPPE4 12a). A layer other than the top one without a boundary (missing or empty list) gets the
  * line as its boundary; else a new layer is made: below the layer in which the line lies in the middle of the model width (the layers are
@@ -204,7 +212,8 @@ export function addLayerBoundary(model, points) {
   // the layer in which the point of the new line in the middle lies: the last layer whose top is not below it
   let j = 0;
   layers.forEach((l, k) => {
-    const top = k === 0 ? heightOn(model.ground, xm) : isObject(l) ? heightOn(l.top, xm) : null;
+    // a boundary counts with its effective height (SPEC 4 v1.8: extended to the model width, clipped at the ground)
+    const top = k === 0 ? heightOn(model.ground, xm) : isObject(l) ? effectiveHeightOn(l.top, model.ground, xm) : null;
     if (top !== null && zNew !== null && top >= zNew - EPS) j = k;
   });
   const material = isObject(layers[j]) && layers[j].material !== undefined ? layers[j].material : null;

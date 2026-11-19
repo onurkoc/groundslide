@@ -4,7 +4,7 @@
 
 import { overviewTable } from './result-view.js';
 import { METHODS } from './result-state.js';
-import { formatFactor } from './numbers.js';
+import { formatFactor, formatCoordinate } from './numbers.js';
 import { supportOnlyMethods, CODE_SPENCER_ONLY } from './supports-result.js';
 
 const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -81,11 +81,12 @@ function factorValue(model, result, key) {
 /**
  * The section "Verification SIA 267", or null (mode characteristic, no model). Returns
  *   { title, factors: { title, head, values }, rule: { title, withSupports, text: [designText, checkText], design, check, source },
+ *     reference: null | text (SPEC_ETAPPE4 13e: the head shows a single surface, the verification is the one of the search),
  *     numbers: null | { title, math, verdict },
  *     methods: { title, kind: 'table', head, rows } | { title, kind: 'none', text } }
  * `rows` of the table: { cells: [...] } or { name, note } (a method that supports exclude: code and text as in the overview).
  */
-export function documentVerification({ model, result, method, t }) {
+export function documentVerification({ model, result, method, target = null, t }) {
   if (!isObject(model) || !isObject(model.analysis) || model.analysis.mode !== 'sia') return null;
   const table = overviewTable(result);
   const withSupports = table.withSupports;
@@ -107,6 +108,7 @@ export function documentVerification({ model, result, method, t }) {
       check: rule.check,
       source: t('ui.doc.sia.source'),
     },
+    reference: null,
     numbers: null,
     methods: { title: t('ui.doc.sia.methods'), kind: 'none', text: t('ui.doc.sia.noCheck') },
   };
@@ -124,6 +126,14 @@ export function documentVerification({ model, result, method, t }) {
     } else {
       section.numbers = { title: t('ui.doc.sia.numbers', { method: name }), math: null, verdict: t('ui.doc.sia.noVerdict') };
     }
+  }
+
+  // SPEC_ETAPPE4 13e: the head shows a single surface; the verification stays with the governing surface of the search and says so
+  if (target && target.kind === 'single' && row && row.valid) {
+    const id = String(target.id);
+    section.reference = row.polyline
+      ? t('ui.doc.sia.referencePolyline', { id, n: row.polyline.n })
+      : t('ui.doc.sia.referenceCircle', { id, xc: formatCoordinate(row.xc), zc: formatCoordinate(row.zc), R: formatCoordinate(row.R) });
   }
 
   // the table per method as in the overview: F_d, required, utilisation, verdict; Janbu F0 has no verdict; the methods that supports exclude with code and text

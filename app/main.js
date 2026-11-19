@@ -633,7 +633,7 @@ function buildPrintDocument() {
     svgText,
     table: documentTable({ result: state.result, method: state.rs.method, target: state.rs.target, slices: state.rs.slices, t }),
     supports: documentSupports({ result: state.result, method: state.rs.method, target: state.rs.target, t }),
-    verification: documentVerification({ model: state.model, result: state.result, method: state.rs.method, t }), // mode sia only (SPEC_ETAPPE4 13b)
+    verification: documentVerification({ model: state.model, result: state.result, method: state.rs.method, target: state.rs.target, t }), // mode sia only (SPEC_ETAPPE4 13b, 13e)
     texts: { dateTime: t('ui.doc.dateTime'), method: t('ui.doc.method'), slices: t('ui.doc.slices'), supports: t('ui.doc.supports'), sketch: t('ui.doc.sketch'), licence: t('ui.doc.licence', { url: LICENCE_URL }) },
   };
   doc.supports = withSupportFactors(doc.supports, state.model); // mode sia: two more columns γ_M and γ_A (SPEC_ETAPPE4 13b)

@@ -163,7 +163,7 @@ export function buildLayers(ctx) {
     ]);
     const body = k === 0
       ? h('p', { class: 'hint', text: ctx.t('ui.layer.topNote') })
-      : [h('p', { class: 'hint', text: ctx.t('ui.layer.boundary') }), pointTable(ctx, {
+      : [h('p', { class: 'hint', text: ctx.t('ui.layer.boundary') }), h('p', { class: 'hint', text: ctx.t('ui.layer.boundaryNote') }), pointTable(ctx, {
           path: `layers[${k}].top`, section: 'layers', ariaLabel: `${ctx.t('ui.layer.boundary')} ${n}`,
           read: (m) => m.layers?.[k]?.top,
           list: (m) => layerBoundary(m, k),

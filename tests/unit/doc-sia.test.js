@@ -132,7 +132,7 @@ test('the section stands right after the graphic and before the slice table; the
   assert.match(doc, /el\.setAttribute\('display', 'block'\)/);
   assert.doesNotMatch(doc, /katex|mathjax|<img|\.png|toDataURL/i);
   const main = read('app', 'main.js');
-  assert.match(main, /verification: documentVerification\(\{ model: state\.model, result: state\.result, method: state\.rs\.method, t \}\)/);
+  assert.match(main, /verification: documentVerification\(\{ model: state\.model, result: state\.result, method: state\.rs\.method, target: state\.rs\.target, t \}\)/); // target since SPEC_ETAPPE4 13e
   assert.match(main, /doc\.supports = withSupportFactors\(doc\.supports, state\.model\);/);
   // the head of the document is as before
   const { model, result } = siaResult('B3_two_layers');
@@ -187,3 +187,31 @@ test('texts of the verification exist in both languages and name no other progra
   }
 });
 
+
+// ------------------------------------------------------------ SPEC_ETAPPE4 13e: head shows a single surface, verification is the search's
+
+test('13e single surface in the head: the verification names its reference (critical surface of the search)', () => {
+  const { model, result } = siaResult('B3_two_layers');
+  const c = result.critical.bishop;
+  const v = documentVerification({ model, result, method: 'bishop', target: { kind: 'single', id: 'P1' }, t: t('de') });
+  assert.ok(typeof v.reference === 'string' && v.reference.length > 0);
+  assert.match(v.reference, /P1/);
+  assert.match(v.reference, /massgebend/);
+  for (const value of [c.xc, c.zc, c.R]) assert.ok(v.reference.includes(value.toFixed(2)), `${value.toFixed(2)} in: ${v.reference}`);
+  const en = documentVerification({ model, result, method: 'bishop', target: { kind: 'single', id: 'P1' }, t: t('en') });
+  assert.match(en.reference, /governing/);
+});
+
+test('13e head shows the critical surface or there is no search: no reference sentence', () => {
+  const { model, result } = siaResult('B3_two_layers');
+  assert.equal(documentVerification({ model, result, method: 'bishop', target: { kind: 'critical' }, t: t('de') }).reference, null);
+  assert.equal(documentVerification({ model, result, method: 'bishop', t: t('de') }).reference, null);
+  const noSearch = siaResult('B3_two_layers', { search: null });
+  assert.equal(documentVerification({ model: noSearch.model, result: noSearch.result, method: null, target: { kind: 'single', id: 'P1' }, t: t('de') }).reference, null);
+});
+
+test('13e the reference sentence is printed right under the title of the section', () => {
+  const src = read('app', 'ui', 'print-doc.js');
+  assert.match(src, /v\.reference/);
+  assert.match(read('app', 'main.js'), /documentVerification\(\{[^}]*target: state\.rs\.target/);
+});

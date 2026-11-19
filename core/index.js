@@ -8,16 +8,19 @@ import { evaluateSurface, hasSupports, runSearch, solverOptions } from './search
 import { crackOutput } from './crack.js';
 import { CODE_SURFACE_POINTS, isPolylineSurface, polylinePointsProblem, polylineToCore } from './polyline.js';
 import { supportsOutput } from './supports.js';
+import { withEffectiveLayerTops } from './layers.js';
 import { spencerSliceStresses } from './spencer.js';
 
 export { validateModel, ModelError } from './model.js';
+export { effectiveBoundary, extendBoundary } from './layers.js';
+export { heightAt } from './geometry.js';
 
-/** Validate, apply partial factors, normalise. Throws ModelError for invalid input. */
+/** Validate, apply partial factors, normalise, effective layer boundaries (SPEC 4 v1.8). Throws ModelError for invalid input. */
 function prepare(model) {
   assertValidModel(model);
   const factored = applyPartialFactors(model);
   const info = normalizeModel(factored);
-  return { m: info.model, info };
+  return { m: withEffectiveLayerTops(info.model), info };
 }
 
 /** Methods to calculate, as listed in analysis.methods. */

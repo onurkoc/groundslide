@@ -49,8 +49,7 @@ const VIOLATIONS = {
   E_LAYER_TOP_FIRST: [(m) => { m.layers[0].top = [[0, 1], [1, 1]]; }],
   E_LAYER_TOP_MISSING: [(m) => { m.layers[1].top = null; }, (m) => { m.layers[1].top = []; }],
   E_LAYER_ORDER: [(m) => { m.layers[1].top = [[0, 30], [60, 31], [50, 31], [130, 35]]; }],
-  E_LAYER_WIDTH: [(m) => { m.layers[1].top = [[10, 30], [130, 35]]; }],
-  E_LAYER_CROSS: [(m) => { m.layers[1].top = [[0, 90], [130, 90]]; }],
+  E_LAYER_CROSS: [(m) => { m.layers.push({ material: 'M1', top: [[0, 20], [130, 40]] }); }], // below the ground, above layers[1] at the right (SPEC 4 v1.8)
   E_MATERIAL_UNKNOWN: [(m) => { m.layers[0].material = 'ZZ'; }, (m) => { m.layers[0].material = null; }],
   E_MATERIAL_INVALID: [(m) => { m.materials.M1.gamma = null; }, (m) => { m.materials.M1.model = 'x'; }, (m) => { m.materials.M1.phi = 95; }, (m) => { m.materials.M2.model = 'undrained'; }, (m) => { m.materials.M1 = 5; }],
   E_WATER_INVALID: [(m) => { m.water = [[0, 1]]; }, (m) => { m.water = []; }],
