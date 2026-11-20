@@ -731,6 +731,9 @@ table.compact td.col-choice select { min-width: 11ch; }
 #sketch { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--space-2); min-height: 0; }
 #sketch > * { flex: none; }
 #sketch > .sketch-canvas { flex: 1 1 0; }
+/* panning and dragging nodes must not select the labels, tool bar or legends; the input fields at a node stay selectable */
+#sketch { -webkit-user-select: none; user-select: none; }
+#sketch .node-editor, #sketch input, #sketch textarea { -webkit-user-select: text; user-select: text; }
 .area-result .result-panels { flex: 1 1 auto; min-height: 0; overflow: auto; }
 .messages-list { display: grid; gap: var(--space-2); }
 
